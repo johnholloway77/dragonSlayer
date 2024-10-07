@@ -7,6 +7,8 @@
 
 #include "Item.h"
 
+class Item;
+
 class Creature{
 protected:
     std::string _name;
@@ -23,6 +25,8 @@ public:
         _alive = true;
     };
     virtual std::string getType() const = 0;
+    virtual void addItem(Item* item) = 0;
+    virtual void removeItem(Item* item) = 0;
 
     std::string getName();
     std::string getDescription();

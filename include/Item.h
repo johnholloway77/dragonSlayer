@@ -3,10 +3,16 @@
 //
 
 #include <string>
-
+#include <variant>
+#include <optional>
 
 #ifndef DRAGONSLAYER_ITEM_H
 #define DRAGONSLAYER_ITEM_H
+
+class Creature;
+class Room;
+
+
 /**
  *  @class Item Item.h "Item.h"
  *  @brief abstract class for items
@@ -16,6 +22,7 @@ class Item{
 protected:
     std::string _name;
     std::string _description;
+    std::optional<std::variant<Creature*, Room*>> _owner = std::nullopt;
 
 public:
 

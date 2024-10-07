@@ -22,9 +22,12 @@ std::string Player::listInventory(){
     return response;
 }
 
-void Player::addToInventory(Item* item) {
-
+void Player::addItem(Item* item){
     _inventory.push_back(item);
+}
+
+void Player::removeItem(Item *item) {
+    _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
 }
 
 

@@ -21,15 +21,14 @@ public:
 
     std::string listInventory();
 
-
-    void addToInventory(Item* item);
-    //void removeFromImventory();
-
     std::string attack();
     std::string attack(Creature* creature);
     std::string attack(Creature* creature, Item *item);
 
     ~Player(){};
+
+    void addItem(Item* item) override;
+    void removeItem(Item* item) override;
 };
 
 #endif //DRAGONSLAYER_PLAYER_H

@@ -24,9 +24,9 @@ int main() {
     std::cout << "health: " << p1->getHealth() << std::endl;
     std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
 
-    p1->addToInventory(s1);
-    p1->addToInventory(s2);
-    p1->addToInventory(muffin);
+    p1->addItem(s1);
+    p1->addItem(s2);
+    p1->addItem(muffin);
     std::cout << p1->listInventory() << std::endl;
 
     //while(p1->isAlive()){

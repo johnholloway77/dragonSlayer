@@ -9,6 +9,8 @@
 #include <vector>
 #include "Item.h"
 
+class Item;
+
 class Room{
 
 private:
