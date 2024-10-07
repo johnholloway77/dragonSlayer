@@ -12,8 +12,8 @@ class Item;
 class Creature{
 protected:
     std::string _name;
-    std::string _description;
     int _health;
+    std::string _description;
     std::vector<Item*> _inventory;
     bool _alive;
 
@@ -24,6 +24,8 @@ public:
     Creature(const std::string& name, int health, const std::string& desc) : _name(name), _health(health), _description(desc) {
         _alive = true;
     };
+    virtual ~Creature(){};
+
     virtual std::string getType() const = 0;
     void addItem(Item* item);
     void removeItem(Item* item);
