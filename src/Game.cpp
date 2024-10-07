@@ -5,7 +5,6 @@
 #include <iostream>
 #include <ncurses.h>
 #include "../include/Game.h"
-#include "../include/TitlePage.h"
 #include "../include/Player.h"
 #include "../include/Text.h"
 
@@ -52,21 +51,25 @@ Game::~Game() {
     std::cout << "\nText game successfully exited" << std::endl;
 }
 
-void Game::setDefaults() {
+int Game::setDefaults() {
     currentRow = 1;
     _inputText = "";
+
+    return 0;
 }
 
-void Game::loadTitle() {
+int Game::loadTitle() {
     curs_set(0);
     _title_win = newwin(_screen_height, _screen_width, 0, 0);
     mvwprintw(_title_win, 1, 1, title.c_str());
     wrefresh(_title_win);
     sleep(2);
     curs_set(1);
+
+    return 0;
 }
 
-void Game::initPlayer() {
+int Game::initPlayer() {
     setDefaults();
     mvwprintw(_display_win, currentRow++, 1, "Enter your name brave warrior!");
     wrefresh(_display_win);
@@ -77,12 +80,17 @@ void Game::initPlayer() {
     echo();
     wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
     _inputText = std::string(buffer);
-    if(_inputText == "exit" || _inputText == "EXIT") return;
+
+    if(_inputText == "exit" || _inputText == "EXIT") {
+        return -1;
+    };
 
     _player = new Player(_inputText, 100, "Our lowly hero");
+
+    return 0;
 }
 
-void Game::welcomeMessage() {
+int Game::welcomeMessage() {
     setDefaults();
     wclear(_display_win);
     mvwprintw(_display_win, currentRow++, 1, "Welcome %s\n", _player->getName().c_str());
@@ -93,5 +101,5 @@ void Game::welcomeMessage() {
     wrefresh(_input_win);
     wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
 
-
+    return 0;
 }

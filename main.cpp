@@ -17,7 +17,11 @@ void init(){
 int main() {
 
     Game game = Game();
-    game.initPlayer();
+    if(game.initPlayer() <0){
+        //error or exit
+        return -1;
+    };
+
     game.welcomeMessage();
 
 

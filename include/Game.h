@@ -38,10 +38,10 @@ public:
     Game();
     ~Game();
 
-    void setDefaults();
-    void loadTitle();
-    void initPlayer();
-    void welcomeMessage();
+    int setDefaults();
+    int loadTitle();
+    int initPlayer();
+    int welcomeMessage();
 
 };
 
