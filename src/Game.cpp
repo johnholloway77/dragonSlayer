@@ -223,7 +223,30 @@ int Game::getCommand() {
         return 0;
     }
 
-    loadRoom(_currentRoom);
+    //loadRoom(_currentRoom);
+    invalidCommand(_inputText, _currentRoom);
+    return 0;
+}
+
+
+int Game::invalidCommand(std::string cmd, Room *room){
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Sorry,");
+    mvwprintw(_display_win, _currentRow++, 1, "I don't understand: %s", cmd.c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", room->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Description:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", room->getDescription().c_str());
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
     return 0;
 }
 

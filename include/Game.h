@@ -53,6 +53,7 @@ public:
     int initWorldMap();
     int welcomeMessage();
     int getCommand();
+    int invalidCommand(std::string cmd, Room *room);
 
     int start();
 };
