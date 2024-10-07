@@ -28,10 +28,13 @@ private:
     WINDOW* _display_win;
     WINDOW* _input_win;
 
+    Room* _currentRoom;
+    bool _validInput;
+
     char buffer[256];
     std::string _inputText;
 
-    int currentRow = 1;
+    int _currentRow = 1;
 
     Player* _player = nullptr;
     std::vector<Room*> _rooms;
@@ -42,10 +45,16 @@ public:
 
     int setDefaults();
     int loadTitle();
+    int loadRoom(Room *room);
+    int loadRoom(std::string roomName);
+    int lookRoom(Room *room);
+    int lookDirection(std::string dir);
     int initPlayer();
     int initWorldMap();
     int welcomeMessage();
+    int getCommand();
 
+    int start();
 };
 
 #endif //DRAGONSLAYER_GAME_H

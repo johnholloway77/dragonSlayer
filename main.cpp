@@ -29,6 +29,12 @@ int main() {
         return -1;
     };
 
+   game.loadRoom("Home");
+    //game.start();
+
+    while(game.getCommand() != -1){};
+
+
 
 
 

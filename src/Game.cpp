@@ -20,7 +20,7 @@ Game::Game(){
 
     initscr();
     cbreak();
-    noecho();
+    //noecho();
     keypad(stdscr, TRUE);
 
     getmaxyx(stdscr, _screen_height, _screen_width);
@@ -60,8 +60,9 @@ Game::~Game() {
 }
 
 int Game::setDefaults() {
-    currentRow = 1;
+    _currentRow = 1;
     _inputText = "";
+    //noecho();
 
     return 0;
 }
@@ -79,7 +80,7 @@ int Game::loadTitle() {
 
 int Game::initPlayer() {
     setDefaults();
-    mvwprintw(_display_win, currentRow++, 1, "Enter your name brave warrior!");
+    mvwprintw(_display_win, _currentRow++, 1, "Enter your name brave warrior!");
     wrefresh(_display_win);
 
     mvwprintw(_input_win, 1, 1, "Name: ");
@@ -101,8 +102,8 @@ int Game::initPlayer() {
 int Game::welcomeMessage() {
     setDefaults();
     wclear(_display_win);
-    mvwprintw(_display_win, currentRow++, 1, "Welcome %s\n", _player->getName().c_str());
-    mvwprintw(_display_win, currentRow++, 1, "%s\n", welcomeText.c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Welcome %s\n", _player->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "%s\n", welcomeText.c_str());
     wrefresh(_display_win);
 
     mvwprintw(_input_win, 1, 1, "Press Enter to begin");
@@ -113,15 +114,128 @@ int Game::welcomeMessage() {
 }
 
 
+int Game::loadRoom(std::string roomName) {
+    for(Room *room : _rooms){
+        if(room && room->getName() == roomName){
+            loadRoom(room);
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+int Game::lookRoom(Room *room) {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", room->getName().c_str());
+
+    mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", room->listItems().c_str());
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+
+    return 0;
+}
+
+int Game::lookDirection(std::string dir) {
+    Room* room;
+
+    if (dir == "north") {
+        room = _currentRoom->getNorth();
+    } else if (dir == "east") {
+        room = _currentRoom->getEast();
+    } else if (dir == "south") {
+        room = _currentRoom->getSouth();
+    } else if (dir == "west") {
+        room = _currentRoom->getWest();
+    } else {
+        room = nullptr;
+    }
+
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+        mvwprintw(_display_win, _currentRow++, 1, "You look to the distance:");
+    if(!room) {
+        mvwprintw(_display_win, _currentRow++, 1, "There is nothing in that direction");
+    }else{
+        mvwprintw(_display_win, _currentRow++, 1, "You see %s", room->getName().c_str());
+    }
+        wrefresh(_display_win);
+
+        box(_input_win, 0, 0);
+        mvwprintw(_input_win, 1, 1, "Command: ");
+        wrefresh(_input_win);
+
+        return 0;
+
+
+
+}
+
+int Game::loadRoom(Room *room){
+
+    _currentRoom = room;
+
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", room->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Description:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", room->getDescription().c_str());
+    //mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
+    //mvwprintw(_display_win, _currentRow++, 1, "%s", room->listItems().c_str());
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+
+    return 0;
+}
+
+int Game::getCommand() {
+    echo();
+    wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
+    _inputText = std::string(buffer);
+
+    if(_inputText == "exit" || _inputText == "EXIT") {
+        return -1;
+    };
+
+    if(_inputText == "look" || _inputText == "LOOK"){
+        lookRoom(_currentRoom);
+        return 0;
+    }
+
+    if(_inputText == "look east" || _inputText == "LOOK EAST"){
+        lookDirection("east");
+        return 0;
+    }
+
+    loadRoom(_currentRoom);
+    return 0;
+}
+
 int Game::initWorldMap() {
 
 
-    Room* home = new Room("home",
-                          R"(You are outside of your thatched roof cottage. The top of the roof
-                                   is smoking from a recent dragon attack. Ironically you were preparing at the
-                                   time, so you won't have to bake it yourself.
-                                   As a peasant your cannot afford to build a new roof
-                                  \n\nCould be worse...at least you don't have student loans)");
+    Room* home = new Room("Home",
+                          "You are outside of your thatched roof cottage. The top of the roof"
+                          " is smoking from a recent dragon attack. Ironically you were preparing food at the"
+                          " time, so you won't have to bake it yourself."
+                          " As a peasant your cannot afford to build a new roof"
+                          "\n\nCould be worse...at least you don't have student loans");
     Food *muffin = new Food("muffin");
     home->addItem(muffin);
 
@@ -156,5 +270,6 @@ int Game::initWorldMap() {
     _rooms.push_back(home);
     _rooms.push_back(field);
     _rooms.push_back(rockyArea);
+
     return 0;
 }
