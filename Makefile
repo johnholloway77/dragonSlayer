@@ -18,12 +18,15 @@ SOURCES = main.cpp \
 # Object files (generated from source files)
 OBJECTS = $(SOURCES:.cpp=.o)
 
+#libraries to link
+LIBS := -lncurses
+
 # Output binary
 BINARY = dragonSlayer
 
 # Rule to link the binary
 $(BINARY): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS) ${LIBS}
 
 # Rule to compile .cpp files into object files
 %.o: %.cpp
