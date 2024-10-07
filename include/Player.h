@@ -3,22 +3,26 @@
 //
 
 #include <vector>
-#include "include/item.h"
+#include "Item.h"
+#include "Creature.h"
 
 #ifndef DRAGONSLAYER_PLAYER_H
 #define DRAGONSLAYER_PLAYER_H
 
-class Player{
-
-private:
-    std::string name;
-    char health = 100;
-    std::vector<Item> inventory;
+class Player : public Creature{
 
 public:
-    Player(const std::string name) : name(name){};
+    Player(const std::string& name, int health) : Creature(name, health){};
+
+    std::string getType() const override{
+        return "Player";
+    }
 
     std::string listInventory();
+
+
+    void addToInventory(Item* item);
+    //void removeFromImventory();
 
     ~Player(){};
 };

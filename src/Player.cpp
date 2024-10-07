@@ -9,9 +9,7 @@
 #include "../include/Item.h"
 #include "../include/Player.h"
 
-std::string Player::getName() {
-    return this->name;
-}
+
 
 std::string Player::listInventory(){
     std::string response = getName() + " has the following items\n";
