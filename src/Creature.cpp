@@ -8,18 +8,20 @@
 
 #include "../include/Creature.h"
 std::string Creature::getName() {
-    return name;
+    return _name;
 }
 
 int Creature::getHealth() {
-    return health;
+    return _health;
 }
 
 void Creature::hurt(int damage) {
-    health = health - damage;
-    if(health <= 0) alive = false;
+    _health = _health - damage;
+    if(_health <= 0){
+        _alive = false;
+    }
 }
 
 bool Creature::isAlive(){
-    return alive;
+    return _alive;
 }

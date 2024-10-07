@@ -12,18 +12,22 @@
  */
 class Item{
 
-private:
-    std::string name;
-
+protected:
+    std::string _name;
+    std::string _description;
 public:
 
-    virtual std::string getName() const{
-        return name;
-    }
+    Item(const std::string& name) : _name(name){};
+    Item(const std::string& name, const std::string desc) : _name(name), _description(desc){};
 
-    virtual void pickup() const = 0;
+    virtual std::string getType() const = 0;
 
-    virtual void drop() const = 0;
+    std::string getName() const;
+    std::string getDescription() const;
+
+    //virtual void pickup();
+
+    //virtual void drop();
 
     virtual ~Item(){};
 };

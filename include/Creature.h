@@ -9,14 +9,14 @@
 
 class Creature{
 protected:
-    std::string name;
-    int health;
-    std::vector<Item*> inventory;
-    bool alive;
+    std::string _name;
+    int _health;
+    std::vector<Item*> _inventory;
+    bool _alive;
 
 public:
-    Creature(const std::string& name, int health) : name(name), health(health) {
-        alive = true;
+    Creature(const std::string& name, int health) : _name(name), _health(health) {
+        _alive = true;
     };
     virtual std::string getType() const = 0;
 

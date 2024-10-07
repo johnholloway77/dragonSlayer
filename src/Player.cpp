@@ -13,13 +13,14 @@
 
 std::string Player::listInventory(){
     std::string response = getName() + " has the following items\n";
-    for(const Item* item : inventory){
-        response += "- " + item->getName() + "\n";
+    for(const Item* item : _inventory){
+        response += "- " + item->getName() + " Type: "  + item->getType() + "\n";
+        response += "\t" + (item->getDescription().empty() ? "Nothing is known about this item" : item->getDescription()) +  "\n";
     }
     return response;
 }
 
 void Player::addToInventory(Item* item) {
 
-    inventory.push_back(item);
+    _inventory.push_back(item);
 }
