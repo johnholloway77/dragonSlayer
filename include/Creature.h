@@ -24,6 +24,7 @@ public:
     int getHealth();
     void hurt(int damage);
     bool isAlive();
+    std::vector<Item*> getInventory();
 };
 
 #endif //DRAGONSLAYER_CREATURE_H

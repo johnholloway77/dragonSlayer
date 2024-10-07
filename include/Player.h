@@ -24,6 +24,10 @@ public:
     void addToInventory(Item* item);
     //void removeFromImventory();
 
+    std::string attack();
+    std::string attack(Creature* creature);
+    std::string attack(Creature* creature, Item *item);
+
     ~Player(){};
 };
 

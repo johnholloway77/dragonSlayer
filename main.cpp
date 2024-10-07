@@ -13,7 +13,7 @@ int main() {
     Sword *s1 = new Sword("StormBringer");
     Sword *s2 = new Sword("DeathBringer", "A deadly sword made cursed with the soul of its enemies", 15);
 
-    while(p1->isAlive()){
+
 
         std::cout << p1->getName() << std::endl;
         std::cout << p1->listInventory() << std::endl;
@@ -24,8 +24,16 @@ int main() {
         p1->addToInventory(s1);
         p1->addToInventory(s2);
         std::cout << p1->listInventory() << std::endl;
+    while(p1->isAlive()){
+        std::cout << p1->attack(p1) << std::endl;
+        std::cout << "health: " << p1->getHealth() << std::endl;
+        std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
 
-        p1->hurt(100);
+        std::cout << p1->attack(p1, s1) << std::endl;
+        std::cout << "health: " << p1->getHealth() << std::endl;
+        std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
+
+        std::cout << p1->attack(p1, s2) << std::endl;
         std::cout << "health: " << p1->getHealth() << std::endl;
         std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
     }
@@ -36,6 +44,11 @@ int main() {
 
     std::cout << field->getName() << " " << field->getDescription() << std::endl;
     std::cout << "N: " << field->lookNorth() << ". E " << field->lookEast() << ", S " << field->lookSouth() << ", W: " << field->lookWest() << std::endl;
+
+    std::cout << "The following items are in " << field->getName() << "\n" << field->listItems() << std::endl;
+    field->addToItems(s1);
+    field->addToItems(s2);
+    std::cout << "The following items are in " << field->getName() << "\n" << field->listItems() << std::endl;
 
 
     delete p1;

@@ -25,3 +25,7 @@ void Creature::hurt(int damage) {
 bool Creature::isAlive(){
     return _alive;
 }
+
+std::vector<Item*> Creature::getInventory(){
+    return _inventory;
+}
