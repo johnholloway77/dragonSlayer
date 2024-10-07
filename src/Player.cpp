@@ -9,7 +9,7 @@
 
 #include "../include/Item.h"
 #include "../include/Player.h"
-#include "../include/Sword.h"
+#include "../include/Weapon.h"
 
 
 
@@ -47,7 +47,7 @@ std::string Player::attack(Creature* creature, Item* item){
     std::string response;
     int damage = 0;
 
-    if(Sword* s = dynamic_cast<Sword*>(item)){
+    if(Weapon* s = dynamic_cast<Weapon*>(item)){
 
         std::random_device randomDevice;
         std::mt19937 gen(randomDevice());

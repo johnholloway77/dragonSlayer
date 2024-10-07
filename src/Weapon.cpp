@@ -2,8 +2,8 @@
 // Created by jholloway on 10/6/24.
 //
 
-#include "../include/Sword.h"
+#include "../include/Weapon.h"
 
-int Sword::getDamage() {
+int Weapon::getDamage() {
     return _damage;
 }

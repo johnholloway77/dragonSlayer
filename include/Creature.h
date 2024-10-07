@@ -6,6 +6,7 @@
 #define DRAGONSLAYER_CREATURE_H
 
 #include "Item.h"
+#include "Room.h"
 
 class Item;
 
@@ -16,6 +17,7 @@ protected:
     std::string _description;
     std::vector<Item*> _inventory;
     bool _alive;
+    Room* _currentRoom = nullptr;
 
 public:
     Creature(const std::string& name, int health) : _name(name), _health(health) {
@@ -29,6 +31,9 @@ public:
     virtual std::string getType() const = 0;
     void addItem(Item* item);
     void removeItem(Item* item);
+
+    Room* getCurrentRoom();
+    void setCurrentRoom(Room *room);
 
     std::string getName();
     std::string getDescription();

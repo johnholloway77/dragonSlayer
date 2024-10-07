@@ -3,7 +3,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include "include/Player.h"
-#include "include/Sword.h"
+#include "include/Weapon.h"
 #include "include/Room.h"
 #include "include/Food.h"
 
@@ -23,6 +23,16 @@ int main() {
     };
 
     game.welcomeMessage();
+
+    if(game.initWorldMap() <0){
+        //error or exit
+        return -1;
+    };
+
+
+
+
+
 
 
 
@@ -54,8 +64,8 @@ int main() {
 //        name = input;
 //
 //        Player *p1 = new Player(name, 100, "Our lowly hero");
-//        Sword *s1 = new Sword("StormBringer");
-//        Sword *s2 = new Sword("DeathBringer", "A deadly sword made cursed with the soul of its enemies", 15);
+//        Weapon *s1 = new Weapon("StormBringer");
+//        Weapon *s2 = new Weapon("DeathBringer", "A deadly sword made cursed with the soul of its enemies", 15);
 //
 //        Food *muffin = new Food("muffin");
 //

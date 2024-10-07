@@ -8,6 +8,15 @@
 #include "../include/Room.h"
 #include "../include/Creature.h"
 
+Room::~Room(){
+    for(Item* item : _inventory){
+        delete item;
+    }
+    for(Creature* creature : _creatures){
+        delete creature;
+    }
+}
+
 Room* Room::getNorth(){
     return _north;
 }
@@ -58,6 +67,12 @@ std::string Room::getName(){
 std::string Room::getDescription(){
     return _description;
 };
+
+bool Room::getAccessable() {
+    return _accessable;
+}
+
+
 std::string Room::listItems(){
     std::string response;
     for(const Item* item : _inventory){
@@ -84,4 +99,46 @@ void Room::addItem(Item* item) {
 
 void Room::removeItem(Item* item) {
     _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
+}
+
+void Room::addCreature(Creature *creature) {
+        creature->setCurrentRoom(this);
+        _creatures.push_back(creature);
+
+}
+
+void Room::removeCreature(Creature *creature) {
+    if(creature->getCurrentRoom() == nullptr){
+    return;
+    }
+    _creatures.erase(std::remove(_creatures.begin(), _creatures.end(), creature), _creatures.end());
+
+}
+
+void Room::setNorth(Room *north) {
+    _north = north;
+    //north->setSouth(this);
+
+}
+
+void Room::setEast(Room *east) {
+    _east = east;
+    //east->setWest(this);
+}
+
+void Room::setSouth(Room *south) {
+    _south = south;
+    //south->setNorth(this);
+}
+
+void Room::setWest(Room *west) {
+    _west = west;
+    //west->setEast(this);
+}
+
+void Room::setAll(Room *north, Room *east, Room *south, Room *west){
+    _north = north;
+    _east = east;
+    _south = south;
+    _west = west;
 }

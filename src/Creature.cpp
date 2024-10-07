@@ -39,6 +39,21 @@ void Creature::removeItem(Item *item) {
     _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
 }
 
+Room* Creature::getCurrentRoom() {
+    return _currentRoom;
+}
+
+void Creature::setCurrentRoom(Room *room) {
+    if(_currentRoom){
+        _currentRoom = room;
+        //room->addCreature()
+    }
+    else{
+        _currentRoom->removeCreature(this);
+        _currentRoom = room;
+    }
+
+}
 
 std::string Creature::useItem(Item* item){
     std::string response = "You can not use " + item->getName() + " that way";

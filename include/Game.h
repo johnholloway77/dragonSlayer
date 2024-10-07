@@ -11,6 +11,7 @@
 #include <unistd.h>
 
 #include "Player.h"
+#include "Room.h"
 
 class Game{
 
@@ -33,6 +34,7 @@ private:
     int currentRow = 1;
 
     Player* _player = nullptr;
+    std::vector<Room*> _rooms;
 
 public:
     Game();
@@ -41,6 +43,7 @@ public:
     int setDefaults();
     int loadTitle();
     int initPlayer();
+    int initWorldMap();
     int welcomeMessage();
 
 };

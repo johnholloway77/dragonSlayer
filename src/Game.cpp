@@ -7,6 +7,10 @@
 #include "../include/Game.h"
 #include "../include/Player.h"
 #include "../include/Text.h"
+#include "../include/Room.h"
+#include "../include/Food.h"
+#include "../include/Weapon.h"
+#include "../include/Enemy.h"
 
 Game::Game(){
     std::cout << "\033[?1049h";
@@ -45,6 +49,10 @@ Game::Game(){
 Game::~Game() {
 
     delete _player;
+
+    for(Room *room : _rooms){
+        delete room;
+    }
 
     endwin();
     printf("\033[?1049l");
@@ -101,5 +109,52 @@ int Game::welcomeMessage() {
     wrefresh(_input_win);
     wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
 
+    return 0;
+}
+
+
+int Game::initWorldMap() {
+
+
+    Room* home = new Room("home",
+                          R"(You are outside of your thatched roof cottage. The top of the roof
+                                   is smoking from a recent dragon attack. Ironically you were preparing at the
+                                   time, so you won't have to bake it yourself.
+                                   As a peasant your cannot afford to build a new roof
+                                  \n\nCould be worse...at least you don't have student loans)");
+    Food *muffin = new Food("muffin");
+    home->addItem(muffin);
+
+
+    Room *field = new Room("Field",
+                           R"(You are in a field where you see the charred remains of fallen
+                                    knights from the dragon attack. Some are still smoking with a odd smell.\n
+                                    You find yourself getting hungry at the smell, but remind yourself that you are
+                                    better than that. Plus you think it will give you an upset tummy.)"
+                                    );
+    Food *humanMeat = new Food("humanMeat", "Forbidden barbequed meat", 15);
+    field->addItem(humanMeat);
+    Weapon *speer = new Weapon("speer",
+                               "An old speer from fallen knight. Has burn marks",
+                               10);
+    field->addItem(speer);
+
+    Room *rockyArea = new Room("Rocky Area",
+                               R"(You come to a rocky plateau. The wind carries the scent of
+                                            death as its cold blow surrounds you. It is the plateau of the Dark Knight.
+                                            The fearsome brute who haunts the trails of the land.)"
+                                );
+    Enemy *darkKnight = new Enemy("Dark Knight",
+                                        50,
+                                        R"(This guy is a jerk)");
+    rockyArea->addCreature(darkKnight);
+
+    //basically creating a linked list of rooms
+    home->setEast(field);
+    field->setEast(rockyArea);
+
+    _rooms.push_back(home);
+    _rooms.push_back(field);
+    _rooms.push_back(rockyArea);
     return 0;
 }
