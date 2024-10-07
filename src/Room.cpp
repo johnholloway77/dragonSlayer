@@ -6,6 +6,7 @@
 #include <vector>
 #include "../include/Item.h"
 #include "../include/Room.h"
+#include "../include/Creature.h"
 
 Room* Room::getNorth(){
     return _north;
@@ -59,13 +60,28 @@ std::string Room::getDescription(){
 };
 std::string Room::listItems(){
     std::string response;
-    for(const Item* item : _items){
+    for(const Item* item : _inventory){
         response += "- " + item->getName() + "\n";
     }
     return response;
 }
 
-void Room::addToItems(Item* item){
-    _items.push_back(item);
+void Room::addItem(Item* item) {
+    if(!item->getOwner().has_value()){
+        item->setOwner(this);
+    }
+    else{
+        std::visit([item](auto&& owner){
+            owner->removeItem(item);
+        }, item->getOwner().value());
+
+
+        item->setOwner(this);
+    }
+
+    _inventory.push_back(item);
 }
-Item* loseItem(std::string itemName);
+
+void Room::removeItem(Item* item) {
+    _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
+}

@@ -33,10 +33,9 @@ public:
 
     std::string getName() const;
     std::string getDescription() const;
+    std::optional<std::variant<Creature*, Room*>> getOwner();
+    void setOwner(std::variant<Creature*, Room*> newOwner);
 
-    //virtual void pickup();
-
-    //virtual void drop();
 
     virtual ~Item(){};
 };

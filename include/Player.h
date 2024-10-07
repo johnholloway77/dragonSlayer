@@ -27,8 +27,6 @@ public:
 
     ~Player(){};
 
-    void addItem(Item* item) override;
-    void removeItem(Item* item) override;
 };
 
 #endif //DRAGONSLAYER_PLAYER_H

@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../include/Creature.h"
+#include "../include/Room.h"
 #include "../include/Food.h"
 
 std::string Creature::getName() {
@@ -17,13 +18,41 @@ std::string Creature::getDescription() {
     return _description;
 }
 
+void Creature::addItem(Item* item){
+
+    if(!item->getOwner().has_value()){
+        item->setOwner(this);
+    }
+    else{
+        std::visit([item](auto&& owner){
+            owner->removeItem(item);
+        }, item->getOwner().value());
+
+
+        item->setOwner(this);
+    }
+
+    _inventory.push_back(item);
+}
+
+void Creature::removeItem(Item *item) {
+    _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
+}
+
+
 std::string Creature::useItem(Item* item){
     std::string response = "You can not use " + item->getName() + " that way";
     if(Food *food = dynamic_cast<Food*>(item)){
         _health += food->getHealth();
 
         response = _name + " ate " + food->getName() + " for " + std::to_string(food->getHealth()) + " health points";
-        delete food;
+
+        //remove item from owner's vector and delete
+        std::visit([item](auto&& owner){
+            owner->removeItem(item);
+        }, item->getOwner().value());
+        delete item;
+        ;
     }
 
     return response;

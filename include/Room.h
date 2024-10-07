@@ -21,7 +21,7 @@ private:
 
     std::string _name;
     std::string _description;
-    std::vector<Item*> _items;
+    std::vector<Item*> _inventory;
 
 public:
 
@@ -43,8 +43,8 @@ public:
     Room* getSouth();
     Room* getWest();
 
-    void addToItems(Item* item);
-    Item* loseItem(std::string itemName);
+    void addItem(Item* item);
+    void removeItem(Item* item);
 
     ~Room(){};
 };

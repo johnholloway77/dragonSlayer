@@ -60,8 +60,8 @@ int main() {
     std::cout << "N: " << field->lookNorth() << ". E " << field->lookEast() << ", S " << field->lookSouth() << ", W: " << field->lookWest() << std::endl;
 
     std::cout << "The following items are in " << field->getName() << "\n" << field->listItems() << std::endl;
-    field->addToItems(s1);
-    field->addToItems(s2);
+    field->addItem(s1);
+    field->addItem(s2);
     std::cout << "The following items are in " << field->getName() << "\n" << field->listItems() << std::endl;
 
 

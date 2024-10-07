@@ -25,8 +25,8 @@ public:
         _alive = true;
     };
     virtual std::string getType() const = 0;
-    virtual void addItem(Item* item) = 0;
-    virtual void removeItem(Item* item) = 0;
+    void addItem(Item* item);
+    void removeItem(Item* item);
 
     std::string getName();
     std::string getDescription();
