@@ -41,7 +41,7 @@ int main() {
     delete p1;
     delete s1;
     delete s2;
-    delete field;
+    delete field;;
 
     return 0;
 }
