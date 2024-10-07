@@ -2,6 +2,7 @@
 #include "include/Player.h"
 #include "include/Sword.h"
 #include "include/Room.h"
+#include "include/Food.h"
 
 int main() {
     std::cout << "Hello, what is your name" << std::endl;
@@ -9,36 +10,49 @@ int main() {
 
     std::cin >> name;
 
-    Player *p1 = new Player(name, 100);
+    Player *p1 = new Player(name, 100, "Our lowly hero");
     Sword *s1 = new Sword("StormBringer");
     Sword *s2 = new Sword("DeathBringer", "A deadly sword made cursed with the soul of its enemies", 15);
 
+    Food *muffin = new Food("muffin");
 
 
-        std::cout << p1->getName() << std::endl;
-        std::cout << p1->listInventory() << std::endl;
+    std::cout << p1->getName() << std::endl;
+    std::cout << p1->getDescription() << std::endl;
+    std::cout << p1->listInventory() << std::endl;
 
-        std::cout << "health: " << p1->getHealth() << std::endl;
-        std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
+    std::cout << "health: " << p1->getHealth() << std::endl;
+    std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
 
-        p1->addToInventory(s1);
-        p1->addToInventory(s2);
-        std::cout << p1->listInventory() << std::endl;
-    while(p1->isAlive()){
+    p1->addToInventory(s1);
+    p1->addToInventory(s2);
+    p1->addToInventory(muffin);
+    std::cout << p1->listInventory() << std::endl;
+
+    //while(p1->isAlive()){
+
+        std::cout << p1->attack() << std::endl;
+
         std::cout << p1->attack(p1) << std::endl;
         std::cout << "health: " << p1->getHealth() << std::endl;
         std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
 
-        std::cout << p1->attack(p1, s1) << std::endl;
+        std::cout << p1->attack(p1, muffin) << std::endl;
         std::cout << "health: " << p1->getHealth() << std::endl;
         std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
 
         std::cout << p1->attack(p1, s2) << std::endl;
         std::cout << "health: " << p1->getHealth() << std::endl;
         std::cout << "is " << p1->getName() << " alive? " << (p1->isAlive() ? "Yes!" : "No") << std::endl;
-    }
 
-    std::cout << "You're dead " << p1->getName() << "!" << std::endl;
+        std::cout << p1->useItem(muffin) << std::endl;
+
+        std::cout << p1->listInventory() << std::endl;
+    //}
+
+
+
+    //std::cout << "You're dead " << p1->getName() << "!" << std::endl;
 
     Room *field = new Room("field", "A vast field");
 

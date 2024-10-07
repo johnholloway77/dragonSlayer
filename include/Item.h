@@ -4,6 +4,7 @@
 
 #include <string>
 
+
 #ifndef DRAGONSLAYER_ITEM_H
 #define DRAGONSLAYER_ITEM_H
 /**
@@ -15,6 +16,7 @@ class Item{
 protected:
     std::string _name;
     std::string _description;
+
 public:
 
     Item(const std::string& name) : _name(name){};

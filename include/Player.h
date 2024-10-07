@@ -13,6 +13,7 @@ class Player : public Creature{
 
 public:
     Player(const std::string& name, int health) : Creature(name, health){};
+    Player(const std::string& name, int health, const std::string desc) : Creature(name, health, desc){};
 
     std::string getType() const override{
         return "Player";

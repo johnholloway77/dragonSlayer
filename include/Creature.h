@@ -10,6 +10,7 @@
 class Creature{
 protected:
     std::string _name;
+    std::string _description;
     int _health;
     std::vector<Item*> _inventory;
     bool _alive;
@@ -18,12 +19,18 @@ public:
     Creature(const std::string& name, int health) : _name(name), _health(health) {
         _alive = true;
     };
+    Creature(const std::string& name, int health, const std::string& desc) : _name(name), _health(health), _description(desc) {
+        _alive = true;
+    };
     virtual std::string getType() const = 0;
 
     std::string getName();
+    std::string getDescription();
+    std::string useItem(Item* item);
     int getHealth();
     void hurt(int damage);
     bool isAlive();
+
     std::vector<Item*> getInventory();
 };
 
