@@ -37,9 +37,11 @@ int main() {
     std::cout << field->getName() << " " << field->getDescription() << std::endl;
     std::cout << "N: " << field->lookNorth() << ". E " << field->lookEast() << ", S " << field->lookSouth() << ", W: " << field->lookWest() << std::endl;
 
+
     delete p1;
     delete s1;
     delete s2;
+    delete field;
 
     return 0;
 }
