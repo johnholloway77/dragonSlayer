@@ -32,7 +32,7 @@ private:
 
     int currentRow = 1;
 
-    Player* _player;
+    Player* _player = nullptr;
 
 public:
     Game();

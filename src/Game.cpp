@@ -44,6 +44,9 @@ Game::Game(){
 }
 
 Game::~Game() {
+
+    delete _player;
+
     endwin();
     printf("\033[?1049l");
     std::cout << "\nText game successfully exited" << std::endl;
