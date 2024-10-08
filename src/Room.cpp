@@ -32,34 +32,34 @@ Room* Room::getWest(){
     return _west;
 }
 
-std::string Room::lookNorth() {
-    if(_north == nullptr){
-        return "There is nothing to the north";
-    } else{
-        return _north->getName();
-    }
-}
-
-std::string Room::lookEast() {
-    if(_east == nullptr){
-        return "There is nothing to the east";
-    } else{
-
-        return _east->getName();
-    }
-}
-
-std::string Room::lookSouth() {
-    if(_south == nullptr){
-        return "There is nothing to the south";
-    }
-    return _south->getName();
-}
-
-std::string Room::lookWest() {
-    if(_west == nullptr) return "There is nothing to the west";
-    return _west->getName();
-}
+//std::string Room::lookNorth() {
+//    if(_north == nullptr){
+//        return "There is nothing to the north";
+//    } else{
+//        return _north->getName();
+//    }
+//}
+//
+//std::string Room::lookEast() {
+//    if(_east == nullptr){
+//        return "There is nothing to the east";
+//    } else{
+//
+//        return _east->getName();
+//    }
+//}
+//
+//std::string Room::lookSouth() {
+//    if(_south == nullptr){
+//        return "There is nothing to the south";
+//    }
+//    return _south->getName();
+//}
+//
+//std::string Room::lookWest() {
+//    if(_west == nullptr) return "There is nothing to the west";
+//    return _west->getName();
+//}
 
 std::string Room::getName(){
     return _name;
@@ -79,6 +79,19 @@ std::string Room::listItems(){
         response += "- " + item->getName() + "\n";
     }
     return response;
+}
+
+std::string Room::listCreatures() {
+    std::string repsonse;
+    if(!_creatures.empty()){
+        for( Creature* creature : _creatures){
+            repsonse += "- " + creature->getName();
+        }
+    }else{
+        repsonse = "Nothing stands here";
+    }
+
+    return repsonse;
 }
 
 void Room::addItem(Item* item) {
@@ -117,23 +130,32 @@ void Room::removeCreature(Creature *creature) {
 
 void Room::setNorth(Room *north) {
     _north = north;
-    //north->setSouth(this);
+
+    if(!north->getSouth()){
+        north->setSouth(this);
+    }
 
 }
 
 void Room::setEast(Room *east) {
     _east = east;
-    //east->setWest(this);
+    if(!east->getWest()){
+        east->setWest(this);
+    }
 }
 
 void Room::setSouth(Room *south) {
     _south = south;
-    //south->setNorth(this);
+    if(!south->getNorth()){
+        south->setNorth(this);
+    }
 }
 
 void Room::setWest(Room *west) {
     _west = west;
-    //west->setEast(this);
+    if(!west->getEast()){
+        west->setEast(this);
+    }
 }
 
 void Room::setAll(Room *north, Room *east, Room *south, Room *west){

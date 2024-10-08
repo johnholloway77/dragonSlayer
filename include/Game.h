@@ -47,13 +47,25 @@ public:
     int loadTitle();
     int loadRoom(Room *room);
     int loadRoom(std::string roomName);
-    int lookRoom(Room *room);
-    int lookDirection(std::string dir);
     int initPlayer();
     int initWorldMap();
     int welcomeMessage();
     int getCommand();
     int invalidCommand(std::string cmd, Room *room);
+
+    void look();
+    void look(std::string dir);
+    void look(Room *room);
+    void look(Creature *creature);
+    void look(Item *item);
+    void lookAtWhat();
+
+    void go();
+    void go(std::string dir);
+    void go(Room *room);
+
+    void helpScreen();
+
 
     int start();
 };

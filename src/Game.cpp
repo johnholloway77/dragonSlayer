@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <sstream>
 #include <ncurses.h>
 #include "../include/Game.h"
 #include "../include/Player.h"
@@ -125,61 +126,7 @@ int Game::loadRoom(std::string roomName) {
     return -1;
 }
 
-int Game::lookRoom(Room *room) {
-    setDefaults();
-    wclear(_display_win);
-    wclear(_input_win);
 
-    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", room->getName().c_str());
-
-    mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
-    mvwprintw(_display_win, _currentRow++, 1, "%s", room->listItems().c_str());
-    wrefresh(_display_win);
-
-
-    box(_input_win, 0, 0);
-    mvwprintw(_input_win, 1, 1, "Command: ");
-    wrefresh(_input_win);
-
-    return 0;
-}
-
-int Game::lookDirection(std::string dir) {
-    Room* room;
-
-    if (dir == "north") {
-        room = _currentRoom->getNorth();
-    } else if (dir == "east") {
-        room = _currentRoom->getEast();
-    } else if (dir == "south") {
-        room = _currentRoom->getSouth();
-    } else if (dir == "west") {
-        room = _currentRoom->getWest();
-    } else {
-        room = nullptr;
-    }
-
-    setDefaults();
-    wclear(_display_win);
-    wclear(_input_win);
-
-        mvwprintw(_display_win, _currentRow++, 1, "You look to the distance:");
-    if(!room) {
-        mvwprintw(_display_win, _currentRow++, 1, "There is nothing in that direction");
-    }else{
-        mvwprintw(_display_win, _currentRow++, 1, "You see %s", room->getName().c_str());
-    }
-        wrefresh(_display_win);
-
-        box(_input_win, 0, 0);
-        mvwprintw(_input_win, 1, 1, "Command: ");
-        wrefresh(_input_win);
-
-        return 0;
-
-
-
-}
 
 int Game::loadRoom(Room *room){
 
@@ -206,25 +153,139 @@ int Game::loadRoom(Room *room){
 
 int Game::getCommand() {
     echo();
+
+    std::vector<std::string> words;
+    std::string currentWord;
+
     wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
+    int i = 0;
+    while(buffer[i] != '\0'){
+        buffer[i] = std::tolower(buffer[i]);
+        i++;
+    }
+
     _inputText = std::string(buffer);
 
-    if(_inputText == "exit" || _inputText == "EXIT") {
+    //This will check for invalid entries like '\n' or other jackassery from user
+    if(_inputText.empty()){
+        invalidCommand(_inputText, _currentRoom);
+        return 0;
+    }
+
+    std::istringstream iss(_inputText);
+
+    while(iss >> currentWord){
+        words.push_back(currentWord);
+    }
+
+    currentWord = words.front();
+    words.erase(words.begin());
+
+    if(currentWord == "exit" || currentWord == "quit" || currentWord == "escape"){
         return -1;
-    };
-
-    if(_inputText == "look" || _inputText == "LOOK"){
-        lookRoom(_currentRoom);
-        return 0;
     }
 
-    if(_inputText == "look east" || _inputText == "LOOK EAST"){
-        lookDirection("east");
+
+
+    if(currentWord == "look" ){
+
+        if(!words.empty()){
+            currentWord = words.front();
+            words.erase(words.begin());
+
+            if(currentWord == "at"){
+                if(!words.empty()){
+                    currentWord = words.front();
+                    words.erase(words.begin());
+
+                    /*
+                     * Need to create something to search through Room's creatures and items
+                     * Call the appropriate look method.
+                     *
+                     */
+
+                }
+
+                lookAtWhat();
+
+            }
+            else{
+
+                if(currentWord == "north"){
+                    look("north");
+                }
+                else if(currentWord == "east"){
+                    look("east");
+                }
+                else if(currentWord == "south"){
+                    look("south");
+                }
+                else if(currentWord == "west"){
+                    look("west");
+                } else{
+                    lookAtWhat();
+                }
+
+            }
+
+        } else{
+            look(_currentRoom);
+        }
+
+
         return 0;
     }
+    else if(currentWord == "go"){
+        if(!words.empty()) {
+            currentWord = words.front();
+            words.erase(words.begin());
 
-    //loadRoom(_currentRoom);
-    invalidCommand(_inputText, _currentRoom);
+            if(currentWord == "north"){
+                if(_currentRoom->getNorth()){
+                    go(_currentRoom->getNorth());
+                }
+                else{
+                    go(currentWord);
+                }
+
+            }
+            else if(currentWord == "east"){
+                if(_currentRoom->getEast()){
+                    go(_currentRoom->getEast());
+                }
+                else{
+                    go(currentWord);
+                }
+            }
+            else if(currentWord == "south"){
+                if(_currentRoom->getSouth()){
+                    go(_currentRoom->getSouth());
+                }
+                else{
+                    go(currentWord);
+                }
+            }
+            else if(currentWord == "west"){
+                if(_currentRoom->getWest()){
+                    go(_currentRoom->getWest());
+                }
+                else{
+                    go(currentWord);
+                }
+            } else{
+                go();
+            }
+        }
+
+    }
+    else if(currentWord == "help"){
+        helpScreen();
+    }
+    else{
+        invalidCommand(_inputText, _currentRoom);
+    }
+
+
     return 0;
 }
 
@@ -264,10 +325,10 @@ int Game::initWorldMap() {
 
 
     Room *field = new Room("Field",
-                           R"(You are in a field where you see the charred remains of fallen
-                                    knights from the dragon attack. Some are still smoking with a odd smell.\n
-                                    You find yourself getting hungry at the smell, but remind yourself that you are
-                                    better than that. Plus you think it will give you an upset tummy.)"
+                           "You are in a field where you see the charred remains of fallen"
+                           " knights from the dragon attack. Some are still smoking with a odd smell."
+                           " You find yourself getting hungry at the smell, but remind yourself that you are"
+                           " better than that. Plus you think it will give you an upset tummy."
                                     );
     Food *humanMeat = new Food("humanMeat", "Forbidden barbequed meat", 15);
     field->addItem(humanMeat);
@@ -277,9 +338,9 @@ int Game::initWorldMap() {
     field->addItem(speer);
 
     Room *rockyArea = new Room("Rocky Area",
-                               R"(You come to a rocky plateau. The wind carries the scent of
-                                            death as its cold blow surrounds you. It is the plateau of the Dark Knight.
-                                            The fearsome brute who haunts the trails of the land.)"
+                               "You come to a rocky plateau. The wind carries the scent of"
+                               " death as its cold blow surrounds you. It is the plateau of the Dark Knight."
+                               " The fearsome brute who haunts the trails of the land."
                                 );
     Enemy *darkKnight = new Enemy("Dark Knight",
                                         50,
@@ -295,4 +356,204 @@ int Game::initWorldMap() {
     _rooms.push_back(rockyArea);
 
     return 0;
+}
+
+void Game::look() {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", _currentRoom->getName().c_str());
+
+    //This is a temp thing until I make text display line by line.
+    _currentRow = _currentRow + 2;
+
+    mvwprintw(_display_win, _currentRow++, 1, "In this area stands");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", _currentRoom->listCreatures().c_str());
+
+    //This is a temp thing until I make text display line by line.
+    _currentRow = _currentRow + 5;
+
+    mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", _currentRoom->listItems().c_str());
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+}
+
+void Game::look(std::string dir) {
+    Room* room;
+
+    if (dir == "north") {
+        room = _currentRoom->getNorth();
+    } else if (dir == "east") {
+        room = _currentRoom->getEast();
+    } else if (dir == "south") {
+        room = _currentRoom->getSouth();
+    } else if (dir == "west") {
+        room = _currentRoom->getWest();
+    } else {
+        room = nullptr;
+    }
+
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "You look to the distance:");
+    if(!room) {
+        mvwprintw(_display_win, _currentRow++, 1, "There is nothing in that direction");
+    }else{
+        mvwprintw(_display_win, _currentRow++, 1, "You see %s", room->getName().c_str());
+    }
+    wrefresh(_display_win);
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+}
+
+void Game::look(Room *room) {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", room->getName().c_str());
+
+    //This is a temp thing until I make text display line by line.
+    _currentRow = _currentRow + 2;
+
+    mvwprintw(_display_win, _currentRow++, 1, "In this area stands");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", room->listCreatures().c_str());
+
+    //This is a temp thing until I make text display line by line.
+    _currentRow = _currentRow + 5;
+
+    mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", room->listItems().c_str());
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+
+    return;
+}
+
+
+void Game::look(Creature *creature) {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "You look at %s", creature->getName().c_str());
+    if(creature->getDescription().empty()) {
+        mvwprintw(_display_win, _currentRow++, 1, "You learn nothing from looking");
+    }else{
+        mvwprintw(_display_win, _currentRow++, 1, "%s", creature->getDescription().c_str());
+    }
+    wrefresh(_display_win);
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+}
+
+void Game::lookAtWhat(){
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "look at what?");
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", _currentRoom->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Description:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", _currentRoom->getDescription().c_str());
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+};
+
+void Game::go() {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Go which direction?");
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", _currentRoom->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Description:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", _currentRoom->getDescription().c_str());
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+}
+
+void Game::go(std::string dir) {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "You cannot go %s", dir.c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Try a different direction");
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "Location: %s", _currentRoom->getName().c_str());
+    mvwprintw(_display_win, _currentRow++, 1, "Description:");
+    mvwprintw(_display_win, _currentRow++, 1, "%s", _currentRoom->getDescription().c_str());
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
+}
+
+void Game::go(Room *room) {
+    loadRoom(room);
+}
+
+//
+//void Game::look(Item *item) {
+//
+//}
+
+void Game::helpScreen() {
+    setDefaults();
+    wclear(_display_win);
+    wclear(_input_win);
+
+    mvwprintw(_display_win, _currentRow++, 1, "Commands - Enter the following");
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "\"exit\" or \"quit\" to end game");
+
+    mvwprintw(_display_win, _currentRow++, 1, "\"look\" - look in a direction");
+    mvwprintw(_display_win, _currentRow++, 1, "\tlook in a direction: eg \"look west\"");
+    mvwprintw(_display_win, _currentRow++, 1, "\tlook in a item or creature: eg \"look at DarkKnight\"");
+
+    mvwprintw(_display_win, _currentRow++, 1, "\"go\" - go in a direction");
+    mvwprintw(_display_win, _currentRow++, 1, "\t eg: go west");
+    mvwprintw(_display_win, _currentRow++, 1, "");
+    mvwprintw(_display_win, _currentRow++, 1, "I'll add some more if once implemented - John");
+
+    wrefresh(_display_win);
+
+
+    box(_input_win, 0, 0);
+    mvwprintw(_input_win, 1, 1, "Command: ");
+    wrefresh(_input_win);
 }

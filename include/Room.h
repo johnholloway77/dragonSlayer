@@ -47,13 +47,9 @@ public:
     std::string getName();
     std::string getDescription();
     std::string listItems();
+    std::string listCreatures();
     bool getAccessable();
 
-
-    std::string lookNorth();
-    std::string lookEast();
-    std::string lookSouth();
-    std::string lookWest();
 
     Room* getNorth();
     Room* getEast();
