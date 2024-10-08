@@ -17,7 +17,8 @@ Game::Game(){
     std::cout << "\033[?1049h";
     fflush(stdout);
 
-    setlocale(LC_ALL, "");
+    //setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "C.UTF-8");
 
     initscr();
     cbreak();
@@ -71,7 +72,12 @@ int Game::setDefaults() {
 int Game::loadTitle() {
     curs_set(0);
     _title_win = newwin(_screen_height, _screen_width, 0, 0);
+
+#ifdef __linux__
+    mvwprintw(_title_win, 1, 1, title2.c_str());
+#else
     mvwprintw(_title_win, 1, 1, title.c_str());
+#endif
     wrefresh(_title_win);
     sleep(2);
     curs_set(1);
