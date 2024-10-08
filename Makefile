@@ -65,4 +65,4 @@ static: ${SRC_DIR} ${GTEST_DIR}
 
 # To perform the style check
 style: ${SRC_DIR} ${GTEST_DIR} ${SRC_INCLUDE} 
-	${STYLE_CHECK} ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
+	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
