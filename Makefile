@@ -59,10 +59,10 @@ STATIC_ANALYSIS = cppcheck
 STYLE_CHECK = cpplint
 
 # To perform the static check 
-static: ${SRC_DIR} ${GTEST_DIR}
+static:
 	${STATIC_ANALYSIS} --verbose --enable=all ${SRC_DIR} ${GTEST_DIR} \
 	${SRC_INCLUDE} --suppress=missingInclude --error-exitcode=1
 
 # To perform the style check
-style: ${SRC_DIR} ${GTEST_DIR} ${SRC_INCLUDE} 
+style:
 	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
