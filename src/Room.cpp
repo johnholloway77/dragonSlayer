@@ -4,6 +4,11 @@
 
 #include <string>
 #include <vector>
+
+#ifdef __linux__
+#include <algorithm>
+#endif
+
 #include "../include/Item.h"
 #include "../include/Room.h"
 #include "../include/Creature.h"
@@ -31,35 +36,6 @@ Room* Room::getSouth() {
 Room* Room::getWest(){
     return _west;
 }
-
-//std::string Room::lookNorth() {
-//    if(_north == nullptr){
-//        return "There is nothing to the north";
-//    } else{
-//        return _north->getName();
-//    }
-//}
-//
-//std::string Room::lookEast() {
-//    if(_east == nullptr){
-//        return "There is nothing to the east";
-//    } else{
-//
-//        return _east->getName();
-//    }
-//}
-//
-//std::string Room::lookSouth() {
-//    if(_south == nullptr){
-//        return "There is nothing to the south";
-//    }
-//    return _south->getName();
-//}
-//
-//std::string Room::lookWest() {
-//    if(_west == nullptr) return "There is nothing to the west";
-//    return _west->getName();
-//}
 
 std::string Room::getName(){
     return _name;

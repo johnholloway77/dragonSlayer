@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#ifdef __linux__
+    #include <algorithm>
+#endif
 
 #include "../include/Creature.h"
 #include "../include/Room.h"
@@ -37,6 +40,8 @@ void Creature::addItem(Item* item){
 
 void Creature::removeItem(Item *item) {
     _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
+    _inventory.erase(std::remove(_inventory.begin(), _inventory.end(), item), _inventory.end());
+
 }
 
 Room* Creature::getCurrentRoom() {
