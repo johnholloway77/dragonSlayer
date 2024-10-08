@@ -7,62 +7,59 @@
 
 #include <string>
 #include <vector>
+
 #include "Item.h"
 
 class Item;
 
-class Room{
+class Room {
+ private:
+  Room *_north = nullptr;
+  Room *_east = nullptr;
+  Room *_south = nullptr;
+  Room *_west = nullptr;
 
+  bool _accessable = true;
 
+  std::string _name;
+  std::string _description;
+  std::vector<Item *> _inventory;
+  std::vector<Creature *> _creatures;
 
+ public:
+  void setNorth(Room *north);
 
-private:
-    Room *_north = nullptr;
-    Room *_east = nullptr;
-    Room *_south = nullptr;
-    Room *_west = nullptr;
+  void setEast(Room *east);
 
-    bool _accessable = true;
+  void setSouth(Room *south);
 
-    std::string _name;
-    std::string _description;
-    std::vector<Item*> _inventory;
-    std::vector<Creature*> _creatures;
+  void setWest(Room *west);
 
-public:
-    void setNorth(Room *north);
+  void setAll(Room *north, Room *east, Room *south, Room *west);
 
-    void setEast(Room *east);
+  Room(std::string name) : _name(name){};
+  Room(std::string name, bool accessable, std::string desc)
+      : _name(name), _accessable(accessable), _description(desc){};
+  Room(std::string name, std::string desc) : _name(name), _description(desc){};
 
-    void setSouth(Room *south);
+  std::string getName();
+  std::string getDescription();
+  std::string listItems();
+  std::string listCreatures();
+  bool getAccessable();
 
-    void setWest(Room *west);
+  Room *getNorth();
+  Room *getEast();
+  Room *getSouth();
+  Room *getWest();
 
-    void setAll(Room *north, Room *east, Room *south, Room *west);
+  void addItem(Item *item);
+  void removeItem(Item *item);
 
-    Room(std::string name) : _name(name){};
-    Room(std::string name, bool accessable, std::string desc) : _name(name), _accessable(accessable), _description(desc){};
-    Room(std::string name, std::string desc) : _name(name), _description(desc){};
+  void addCreature(Creature *creature);
+  void removeCreature(Creature *creature);
 
-    std::string getName();
-    std::string getDescription();
-    std::string listItems();
-    std::string listCreatures();
-    bool getAccessable();
-
-
-    Room* getNorth();
-    Room* getEast();
-    Room* getSouth();
-    Room* getWest();
-
-    void addItem(Item* item);
-    void removeItem(Item* item);
-
-    void addCreature(Creature *creature);
-    void removeCreature(Creature *creature);
-
-    ~Room();
+  ~Room();
 };
 
-#endif //DRAGONSLAYER_ROOM_H
+#endif  // DRAGONSLAYER_ROOM_H

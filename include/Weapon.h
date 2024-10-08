@@ -5,28 +5,22 @@
 #ifndef DRAGONSLAYER_WEAPON_H
 #define DRAGONSLAYER_WEAPON_H
 
-
 #include "Item.h"
 
-class Weapon : public Item{
+class Weapon : public Item {
+ private:
+  int _damage = 5;  // default damage
+ public:
+  std::string getType() const override { return "Weapon"; }
 
-private:
-    int _damage = 5; //default damage
-public:
+  Weapon(const std::string& name) : Item(name){};
+  Weapon(const std::string& name, const std::string& desc) : Item(name, desc){};
+  Weapon(const std::string& name, const std::string& desc, int damage)
+      : Item(name, desc) {
+    _damage = damage;
+  };
 
-    std::string getType() const override{
-        return "Weapon";
-    }
-
-    Weapon(const std::string& name): Item(name) {};
-    Weapon(const std::string& name, const std::string& desc): Item(name, desc) {};
-    Weapon(const std::string& name, const std::string& desc, int damage): Item(name, desc) {
-        _damage = damage;
-    };
-
-
-    int getDamage();
+  int getDamage();
 };
 
-
-#endif //DRAGONSLAYER_WEAPON_H
+#endif  // DRAGONSLAYER_WEAPON_H

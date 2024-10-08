@@ -4,6 +4,4 @@
 
 #include "../include/Food.h"
 
-int Food::getHealth(){
-    return _health;
-}
+int Food::getHealth() { return _health; }

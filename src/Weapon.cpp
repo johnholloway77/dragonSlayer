@@ -4,6 +4,4 @@
 
 #include "../include/Weapon.h"
 
-int Weapon::getDamage() {
-    return _damage;
-}
+int Weapon::getDamage() { return _damage; }
