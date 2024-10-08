@@ -1,0 +1,25 @@
+stages:
+  - quality
+  - build
+
+variables:
+  GIT_STRATEGY: clone
+  TIMEOUT: 10m
+
+styleCheck:
+  stage: quality
+  script:
+    - make style
+
+staticAnalysis:
+  stage: quality
+  script:
+    - make static
+
+buildTests:
+  stage: build
+  script:
+    - make
+  artifacts:
+    paths:
+      - dragonSlayer

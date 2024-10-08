@@ -41,3 +41,28 @@ clean:
 .PHONY: clean-obj
 clean-obj:
 	rm -rf $(OBJECTS)
+
+
+################################################################################
+# Test targets
+################################################################################
+
+#directories
+SRC_DIR = src
+SRC_INCLUDE = include
+GTEST_DIR = test
+
+INCLUDE = -I ${SRC_INCLUDE}
+
+# Tool variables
+STATIC_ANALYSIS = cppcheck
+STYLE_CHECK = cpplint
+
+# To perform the static check 
+static: ${SRC_DIR} ${GTEST_DIR}
+	${STATIC_ANALYSIS} --verbose --enable=all ${SRC_DIR} ${GTEST_DIR} \
+	${SRC_INCLUDE} --suppress=missingInclude --error-exitcode=1
+
+# To perform the style check
+style: ${SRC_DIR} ${GTEST_DIR} ${SRC_INCLUDE} 
+	${STYLE_CHECK} ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
