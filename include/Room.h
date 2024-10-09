@@ -55,9 +55,12 @@ class Room {
 
   void addItem(Item *item);
   void removeItem(Item *item);
+  std::vector<Item *> getInventory();
 
   void addCreature(Creature *creature);
   void removeCreature(Creature *creature);
+  std::vector<Creature *> getCreatures();
+
 
   ~Room();
 };

@@ -205,10 +205,24 @@ int Game::getCommand() {
            * items Call the appropriate look method.
            *
            */
+          for (Creature *creature : _currentRoom->getCreatures()) {
+            if (currentWord == _toLower(creature->getName())) {
+              look(creature);
+              return 0;
+            }
+          }
+
+          for (Item *item : _currentRoom->getInventory()) {
+            if (currentWord == _toLower(item->getName())) {
+              look(item);
+              return 0;
+            }
+          }
+
+          invalidCommand(_inputText, _currentRoom);
+        } else {
+          lookAtWhat();
         }
-
-        lookAtWhat();
-
       } else {
         if (currentWord == "north") {
           look("north");
@@ -218,15 +232,15 @@ int Game::getCommand() {
           look("south");
         } else if (currentWord == "west") {
           look("west");
+        } else if (currentWord == "inventory" || currentWord == "player") {
+          look(_player);
         } else {
           lookAtWhat();
         }
       }
-
     } else {
       look(_currentRoom);
     }
-
     return 0;
   } else if (currentWord == "go") {
     if (!words.empty()) {
@@ -262,15 +276,187 @@ int Game::getCommand() {
         go();
       }
     }
-
   } else if (currentWord == "help") {
     helpScreen();
+  } else if (currentWord == "pickup" || currentWord == "get" || currentWord == "pick-up" || currentWord == "grab") {
+    //fill out this section
+    if (!words.empty()) {
+      currentWord = words.front();
+      words.erase(words.begin());
+
+      for (Item *item : _currentRoom->getInventory()) {
+        if (currentWord == _toLower(item->getName())) {
+          _player->addItem(item);
+          return loadRoom(_currentRoom, 'p', item);
+        }
+      }
+
+    } else {
+      invalidCommand(_inputText, _currentRoom);
+      return 0;
+    }
   } else {
     invalidCommand(_inputText, _currentRoom);
   }
 
   return 0;
 }
+
+
+//int Game::getCommand() {
+//  echo();
+//
+//  std::vector<std::string> words;
+//  std::string currentWord;
+//
+//  wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
+//  int i = 0;
+//  while (buffer[i] != '\0') {
+//    buffer[i] = std::tolower(buffer[i]);
+//    i++;
+//  }
+//
+//  _inputText = std::string(buffer);
+//
+//  // This will check for invalid entries like '\n' or other jackassery from user
+//  if (_inputText.empty()) {
+//    invalidCommand(_inputText, _currentRoom);
+//    return 0;
+//  }
+//
+//  std::istringstream iss(_inputText);
+//
+//  while (iss >> currentWord) {
+//    words.push_back(currentWord);
+//  }
+//
+//  currentWord = words.front();
+//  words.erase(words.begin());
+//
+//  if (currentWord == "exit" || currentWord == "quit" ||
+//      currentWord == "escape") {
+//    return -1;
+//  }
+//
+//  if (currentWord == "look") {
+//    if (!words.empty()) {
+//      currentWord = words.front();
+//      words.erase(words.begin());
+//
+//      if (currentWord == "at") {
+//        if (!words.empty()) {
+//          currentWord = words.front();
+//          words.erase(words.begin());
+//
+//          /*
+//           * Need to create something to search through Room's creatures and
+//           * items Call the appropriate look method.
+//           *
+//           */
+//          for (Creature *creature : _currentRoom->getCreatures()) {
+//            if (currentWord == _toLower(creature->getName())) {
+//              look(creature);
+//              return 0;
+//            }
+//          }
+//
+//          for (Item *item : _currentRoom->getInventory()) {
+//            if (currentWord == _toLower(item->getName())) {
+//              look(item);
+//              return 0;
+//            }
+//          }
+//
+//          invalidCommand(_inputText, _currentRoom);
+//        }
+//
+//        lookAtWhat();
+//
+//}
+//      } else {
+//        if (currentWord == "north") {
+//          look("north");
+//        } else if (currentWord == "east") {
+//          look("east");
+//        } else if (currentWord == "south") {
+//          look("south");
+//        } else if (currentWord == "west") {
+//          look("west");
+//        } else if (currentWord == "inventory" || currentWord == "player") {
+//          look(_player);
+//
+//        } else {
+//          lookAtWhat();
+//        }
+//        }
+//      }
+//    }
+//
+//  } else {
+//    look(_currentRoom);
+//  }
+//
+//    return 0;
+//  } else if (currentWord == "go") {
+//    if (!words.empty()) {
+//      currentWord = words.front();
+//      words.erase(words.begin());
+//
+//      if (currentWord == "north") {
+//        if (_currentRoom->getNorth()) {
+//          go(_currentRoom->getNorth());
+//        } else {
+//          go(currentWord);
+//        }
+//
+//      } else if (currentWord == "east") {
+//        if (_currentRoom->getEast()) {
+//          go(_currentRoom->getEast());
+//        } else {
+//          go(currentWord);
+//        }
+//      } else if (currentWord == "south") {
+//        if (_currentRoom->getSouth()) {
+//          go(_currentRoom->getSouth());
+//        } else {
+//          go(currentWord);
+//        }
+//      } else if (currentWord == "west") {
+//        if (_currentRoom->getWest()) {
+//          go(_currentRoom->getWest());
+//        } else {
+//          go(currentWord);
+//        }
+//      } else {
+//        go();
+//      }
+//    }
+//
+//  } else if (currentWord == "help") {
+//    helpScreen();
+//  } else if(currentWord == "pickup" || currentWord == "get" || currentWord == "pick-up" || currentWord == "grab"){
+//    //fill out this section
+//    if (!words.empty()) {
+//      currentWord = words.front();
+//      words.erase(words.begin());
+//
+//      for(Item *item : _currentRoom->getInventory()){
+//        if(currentWord == _toLower(item->getName())){
+//          _player->addItem(item);
+//          return loadRoom(_currentRoom, 'p', item );
+//        }
+//      }
+//
+//    } else{
+//      invalidCommand(_inputText, _currentRoom);
+//      return 0;
+//    }
+//  } else {
+//    invalidCommand(_inputText, _currentRoom);
+//  }
+//
+//  return 0;
+//}
 
 int Game::invalidCommand(std::string cmd, Room *room) {
   setDefaults();
@@ -327,7 +513,7 @@ int Game::initWorldMap() {
                " death as its cold blow surrounds you. It is the plateau of "
                "the Dark Knight."
                " The fearsome brute who haunts the trails of the land.");
-  Enemy *darkKnight = new Enemy("Dark Knight", 50, R"(This guy is a jerk)");
+  Enemy *darkKnight = new Enemy("DarkKnight", 50, R"(This guy is a jerk)");
   rockyArea->addCreature(darkKnight);
 
   // basically creating a linked list of rooms
@@ -341,27 +527,21 @@ int Game::initWorldMap() {
   return 0;
 }
 
-void Game::look() {
+void Game::look(Player* player) {
   setDefaults();
   wclear(_display_win);
   wclear(_input_win);
 
-  mvwprintw(_display_win, _currentRow++, 1, "Location: %s",
+  mvwprintw(_display_win, _currentRow++, 1, "Our hero: %s",
+            player->getName().c_str());
+  mvwprintw(_display_win, _currentRow++, 1, "Current Location: %s",
             _currentRoom->getName().c_str());
 
   // This is a temp thing until I make text display line by line.
-  _currentRow = _currentRow + 2;
+  _currentRow++;
 
-  mvwprintw(_display_win, _currentRow++, 1, "In this area stands");
   mvwprintw(_display_win, _currentRow++, 1, "%s",
-            _currentRoom->listCreatures().c_str());
-
-  // This is a temp thing until I make text display line by line.
-  _currentRow = _currentRow + 5;
-
-  mvwprintw(_display_win, _currentRow++, 1, "Items you see:");
-  mvwprintw(_display_win, _currentRow++, 1, "%s",
-            _currentRoom->listItems().c_str());
+            player->listInventory().c_str());
 
   wrefresh(_display_win);
 
@@ -445,6 +625,26 @@ void Game::look(Creature *creature) {
   } else {
     mvwprintw(_display_win, _currentRow++, 1, "%s",
               creature->getDescription().c_str());
+  }
+  wrefresh(_display_win);
+
+  box(_input_win, 0, 0);
+  mvwprintw(_input_win, 1, 1, "Command: ");
+  wrefresh(_input_win);
+}
+
+void Game::look(Item *item) {
+  setDefaults();
+  wclear(_display_win);
+  wclear(_input_win);
+
+  mvwprintw(_display_win, _currentRow++, 1, "You look at %s",
+            item->getName().c_str());
+  if (item->getDescription().empty()) {
+    mvwprintw(_display_win, _currentRow++, 1, "You learn nothing from looking at %s", item->getName().c_str());
+  } else {
+    mvwprintw(_display_win, _currentRow++, 1, "%s",
+              item->getDescription().c_str());
   }
   wrefresh(_display_win);
 
@@ -548,3 +748,35 @@ void Game::helpScreen() {
   mvwprintw(_input_win, 1, 1, "Command: ");
   wrefresh(_input_win);
 }
+int Game::loadRoom(Room *room, char c, Item *item) {
+
+  std::string actionString;
+
+  if(c == 'p'){
+    actionString = "picks up";
+  } else if(c == 'c'){
+    actionString = "drops";
+  } else{
+    actionString = "does something with";
+  }
+
+  setDefaults();
+  wclear(_display_win);
+  wclear(_input_win);
+
+  mvwprintw(_display_win, _currentRow++, 1, "Player %s %s.", actionString.c_str(), item->getName().c_str());
+  mvwprintw(_display_win, _currentRow++, 1, "");
+  mvwprintw(_display_win, _currentRow++, 1, "Location: %s",
+            _currentRoom->getName().c_str());
+  mvwprintw(_display_win, _currentRow++, 1, "Description:");
+  mvwprintw(_display_win, _currentRow++, 1, "%s",
+            _currentRoom->getDescription().c_str());
+
+  wrefresh(_display_win);
+
+  box(_input_win, 0, 0);
+  mvwprintw(_input_win, 1, 1, "Command: ");
+  wrefresh(_input_win);
+
+
+  return 0; }

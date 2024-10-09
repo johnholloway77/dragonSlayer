@@ -39,6 +39,15 @@ class Game {
   Player *_player = nullptr;
   std::vector<Room *> _rooms;
 
+
+  std::string _toLower(std::string inString){
+   std::string str = inString;
+
+   std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c){return  std::tolower(c);});
+
+   return str;
+  }
+
  public:
   Game();
   ~Game();
@@ -46,6 +55,7 @@ class Game {
   int setDefaults();
   int loadTitle();
   int loadRoom(Room *room);
+  int loadRoom(Room *room, char c, Item *item);
   int loadRoom(std::string roomName);
   int initPlayer();
   int initWorldMap();
@@ -53,7 +63,7 @@ class Game {
   int getCommand();
   int invalidCommand(std::string cmd, Room *room);
 
-  void look();
+  void look(Player* p);
   void look(std::string dir);
   void look(Room *room);
   void look(Creature *creature);
