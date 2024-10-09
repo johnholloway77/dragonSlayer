@@ -61,7 +61,6 @@ class Room {
   void removeCreature(Creature *creature);
   std::vector<Creature *> getCreatures();
 
-
   ~Room();
 };
 

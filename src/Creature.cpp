@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <random>
 #include <string>
 #include <vector>
 #ifdef __linux__
@@ -11,7 +12,9 @@
 
 #include "../include/Creature.h"
 #include "../include/Food.h"
+#include "../include/Item.h"
 #include "../include/Room.h"
+#include "../include/Weapon.h"
 
 std::string Creature::getName() { return _name; }
 
@@ -51,6 +54,7 @@ void Creature::setCurrentRoom(Room* room) {
 
 std::string Creature::useItem(Item* item) {
   std::string response = "You can not use " + item->getName() + " that way";
+
   if (Food* food = dynamic_cast<Food*>(item)) {
     _health += food->getHealth();
 
@@ -71,11 +75,63 @@ int Creature::getHealth() { return _health; }
 
 void Creature::hurt(int damage) {
   _health = _health - damage;
-  if (_health <= 0) {
-    _alive = false;
+
+  if (!isAlive()) {
+    _setDescription(_name + " is dead");
+    for (Item* item : _inventory) {
+      _currentRoom->addItem(item);
+    }
   }
 }
 
-bool Creature::isAlive() { return _alive; }
+bool Creature::isAlive() { return _health > 0; }
 
 std::vector<Item*> Creature::getInventory() { return _inventory; }
+
+std::string Creature::attack(Creature* creature, Item* item) {
+  std::string response;
+  int damage = 0;
+
+  if (Weapon* s = dynamic_cast<Weapon*>(item)) {
+    std::random_device randomDevice;
+    std::mt19937 gen(randomDevice());
+    std::uniform_int_distribution<> distribution(1, 10);
+    damage = distribution(randomDevice) * s->getDamage();
+    creature->hurt(damage);
+    response += "In retaliation " + this->getName() + "  attacked " +
+                creature->getName() + " with " + item->getName() + " for " +
+                std::to_string(damage) + " points of damage";
+  }
+
+  return response;
+}
+std::string Creature::attack(Creature* creature) {
+  std::string response;
+  int damage = 0;
+
+  std::random_device randomDevice;
+  std::mt19937 gen(randomDevice());
+  std::uniform_int_distribution<> distribution(1, 10);
+
+  for (Item* item : _inventory) {
+    if (Weapon* s = dynamic_cast<Weapon*>(item)) {
+      std::random_device randomDevice;
+      std::mt19937 gen(randomDevice());
+      std::uniform_int_distribution<> distribution(1, 10);
+      damage = distribution(randomDevice) * s->getDamage();
+      creature->hurt(damage);
+      return "In retaliation " + this->getName() + "  attacked " +
+             creature->getName() + " with " + item->getName() + " for " +
+             std::to_string(damage) + " points of damage";
+    }
+  }
+
+  damage = distribution(randomDevice);
+  creature->hurt(damage);
+
+  response += "In retaliation " + this->getName() + " attacked " +
+              creature->getName() + " with bare hands for " +
+              std::to_string(damage) + " points of damage";
+
+  return response;
+}

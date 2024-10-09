@@ -21,8 +21,8 @@ class Player : public Creature {
   std::string listInventory();
 
   std::string attack();
-  std::string attack(Creature* creature);
-  std::string attack(Creature* creature, Item* item);
+  std::string attack(Creature* creature) override;
+  std::string attack(Creature* creature, Item* item) override;
 
   ~Player(){};
 };

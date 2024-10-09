@@ -30,6 +30,10 @@ std::string Player::attack() {
 }
 
 std::string Player::attack(Creature* creature) {
+  if (!creature->isAlive()) {
+    return "You cannot hurt " + creature->getName() + " as it's already dead";
+  }
+
   std::string response;
   int damage;
   std::random_device randomDevice;
@@ -41,12 +45,25 @@ std::string Player::attack(Creature* creature) {
   response += creature->getName() + " was attacked with bare hands for " +
               std::to_string(damage) + " points of damage";
 
+  if (!creature->isAlive()) {
+    response = "You killed " + creature->getName() + " with barehands!" +
+               ". Their body and goods fall to the ground.";
+  }
+
+  // code for enemy retaliation
+
+  response += +"\n" + creature->attack(this);
+
   return response;
 }
 
 std::string Player::attack(Creature* creature, Item* item) {
   std::string response;
   int damage = 0;
+
+  if (!creature->isAlive()) {
+    return "You cannot hurt " + creature->getName() + " as it's already dead";
+  }
 
   if (Weapon* s = dynamic_cast<Weapon*>(item)) {
     std::random_device randomDevice;
@@ -57,10 +74,21 @@ std::string Player::attack(Creature* creature, Item* item) {
     response += creature->getName() + " was attacked with " + item->getName() +
                 " for " + std::to_string(damage) + " points of damage";
 
+    if (!creature->isAlive()) {
+      return "You killed " + creature->getName() + " with " + item->getName() +
+             ". Their body and goods fall to the ground.";
+    }
+
+    // code for enemy retaliation
+    response += +"\n" + creature->attack(this);
+
   } else {
     response += item->getName() + " is not a weapon\n";
     response += creature->getName() + " was attacked with " + item->getName() +
                 " for " + std::to_string(damage) + " points of damage";
+
+    // code for enemy retaliation
+    response += +"\n" + creature->attack(this);
   }
 
   return response;

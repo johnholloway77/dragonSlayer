@@ -122,11 +122,6 @@ void Room::setAll(Room* north, Room* east, Room* south, Room* west) {
   _west = west;
 }
 
+std::vector<Item*> Room::getInventory() { return _inventory; }
 
-std::vector<Item *> Room::getInventory(){
-  return _inventory;
-}
-
-std::vector<Creature *> Room::getCreatures(){
-  return _creatures;
-}
+std::vector<Creature*> Room::getCreatures() { return _creatures; }

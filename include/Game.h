@@ -68,15 +68,15 @@ class Game {
   void look(Room *room);
   void look(Creature *creature);
   void look(Item *item);
-  void lookAtWhat();
+  void customResponse(std::string str);
 
-  void go();
+
   void go(std::string dir);
   void go(Room *room);
 
   void helpScreen();
 
-  int start();
+  int deadScreen();
 };
 
 #endif  // DRAGONSLAYER_GAME_H
