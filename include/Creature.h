@@ -19,9 +19,7 @@ class Creature {
   bool _alive;
   Room* _currentRoom = nullptr;
 
-  void _setDescription(std::string newDesc){
-    _description = newDesc;
-  }
+  void _setDescription(std::string newDesc) { _description = newDesc; }
 
  public:
   Creature(const std::string& name, int health) : _name(name), _health(health) {
@@ -31,7 +29,11 @@ class Creature {
       : _name(name), _health(health), _description(desc) {
     _alive = true;
   };
-  virtual ~Creature(){};
+  virtual ~Creature() {
+    for (Item* item : _inventory) {
+      delete item;
+    }
+  };
 
   virtual std::string getType() const = 0;
   void addItem(Item* item);
@@ -46,8 +48,8 @@ class Creature {
   int getHealth();
   void hurt(int damage);
   bool isAlive();
-  virtual std::string attack(Creature *creature, Item* item);
-  virtual std::string attack(Creature *creature);
+  virtual std::string attack(Creature* creature, Item* item);
+  virtual std::string attack(Creature* creature);
 
   std::vector<Item*> getInventory();
 };

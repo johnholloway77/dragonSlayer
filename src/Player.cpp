@@ -46,8 +46,8 @@ std::string Player::attack(Creature* creature) {
               std::to_string(damage) + " points of damage";
 
   if (!creature->isAlive()) {
-    response = "You killed " + creature->getName() + " with barehands!" +
-               ". Their body and goods fall to the ground.";
+    return response + "\nYou killed " + creature->getName() +
+           " with bare hands!" + ". Their body and goods fall to the ground.";
   }
 
   // code for enemy retaliation
@@ -75,8 +75,8 @@ std::string Player::attack(Creature* creature, Item* item) {
                 " for " + std::to_string(damage) + " points of damage";
 
     if (!creature->isAlive()) {
-      return "You killed " + creature->getName() + " with " + item->getName() +
-             ". Their body and goods fall to the ground.";
+      return response + "\nYou killed " + creature->getName() + " with " +
+             item->getName() + ". Their body and goods fall to the ground.";
     }
 
     // code for enemy retaliation

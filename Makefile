@@ -11,6 +11,9 @@ endif
 # Compiler flags (JHolloway is picky and likes to use all of the warnings!!)
 CXXFLAGS := -Wall -Wextra -std=c++17
 
+#debug stuff since John keeps getting segfaults
+DEBUG := -g -O0
+
 # Source files (main.cpp and all .cpp files in the src directory)
 SOURCES = main.cpp \
     $(wildcard src/*.cpp)
@@ -31,6 +34,10 @@ $(BINARY): $(OBJECTS)
 # Rule to compile .cpp files into object files
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+#debug for John to fight this program in gdb
+debug: CXXFLAGS += $(DEBUGFLAGS)
+debug: $(BINARY)
 
 # Clean up the binary and object files
 .PHONY: clean

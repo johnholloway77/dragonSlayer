@@ -58,7 +58,7 @@ Game::~Game() {
 
   endwin();
   printf("\033[?1049l");
-  std::cout << "\nText game successfully exited" << std::endl;
+  std::cout << "\nDragonSlayer successfully exited" << std::endl;
 }
 
 int Game::setDefaults() {
@@ -519,6 +519,7 @@ int Game::initWorldMap() {
   Food *dragonMeat =
       new Food("dragonMeat", "Tough meat from the flesh of a dragon", 300);
   redDragon->addItem(dragonMeat);
+  dragonLair->addCreature(redDragon);
 
   Room *plains = new Room(
       "The empty plains",
