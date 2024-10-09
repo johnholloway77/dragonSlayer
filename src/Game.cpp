@@ -430,12 +430,13 @@ int Game::initWorldMap() {
    */
   Room *home = new Room(
       "Home",
-      "You are outside of your thatched roof cottage. The top of the roof"
+      " You are outside of your thatched roof cottage. The top of the roof"
       " is smoking from a recent dragon attack. Ironically you were preparing "
-      "food at the"
+      " food at the"
       " time, so you won't have to bake it yourself."
       " As a peasant your cannot afford to build a new roof"
-      "\n\nCould be worse...at least you don't have student loans");
+      "\n\n Could be worse...at least you don't have student loans"
+      "\n\n The trail in front goes South and East");
   Food *muffin = new Food("muffin");
   home->addItem(muffin);
   /*
@@ -443,12 +444,13 @@ int Game::initWorldMap() {
    */
   Room *field = new Room(
       "Field",
-      "You are in a field where you see the charred remains of fallen"
+      " You are in a field where you see the charred remains of fallen"
       " knights from the dragon attack. Some are still smoking with a odd "
-      "smell."
+      " smell."
       " You find yourself getting hungry at the smell, but remind yourself "
-      "that you are"
-      " better than that. Plus you think it will give you an upset tummy.");
+      " that you are"
+      " better than that. Plus you think it will give you an upset tummy."
+      "\n\n The trail in front goes West and East");
   Food *humanMeat = new Food("humanMeat", "Forbidden barbequed meat", -1000);
   field->addItem(humanMeat);
   Weapon *speer = new Weapon(
@@ -464,7 +466,8 @@ int Game::initWorldMap() {
                "You come to a rocky plateau. The wind carries the scent of"
                " death as its cold blow surrounds you. It is the plateau of "
                "the DarkKnight."
-               " The fearsome brute who haunts the trails of the land.");
+               " The fearsome brute who haunts the trails of the land."
+               "\n\n The trail in front goes South and West");
   Enemy *darkKnight = new Enemy("DarkKnight", 50, R"(This guy is a jerk)");
   rockyArea->addCreature(darkKnight);
   Weapon *darkSword =
@@ -472,17 +475,71 @@ int Game::initWorldMap() {
   darkKnight->addItem(darkSword);
   Food *mutton = new Food("mutton", "a large tasty chop of mutton", 50);
   darkKnight->addItem(mutton);
+
+  Room *forest =
+      new Room("forest",
+               "The path leads you into a think forest. The trees block your "
+               "vision of the plateau to the north and the cliffs to the west. "
+               "The sounds of animals is drowned out by the chanting of an "
+               "ancient language. Strange figures hang from the trees, strange "
+               "herbs seem to be planted here. What people have been living "
+               "here and what type of magic do they have?"
+               "\n\n The trail goes north and west");
+  Enemy *witch = new Enemy(
+      "Witch", 50,
+      "An ugly woman with a haunting gaze. Her tattered cloths reek "
+      "of the blood of the children she's eaten. Around her neck hangs a vial"
+      "of something magical. What could it be?");
+  forest->addCreature(witch);
+  Food *potion =
+      new Food("MagicPotion",
+               "A drink that radiates energy and brings immortality", 1000000);
+  witch->addItem(potion);
+
+  /*
+   * The fifth area on the map
+   * below field
+   */
+  Room *dragonLair =
+      new Room("Dragon's lair",
+               " You come to a rocky cliff side. In front of the cliffs "
+               " At the bottom of the cliff is a mound of rock and human "
+               "skulls, capped with gold coins and fine treasure."
+               " It is the nest of the great red dragon!"
+               "\n\n The trail goes east, south and west");
+  Enemy *redDragon =
+      new Enemy("redDragon", 200,
+                "The great red dragon is a beast that brings terror to the "
+                "hearts of the bravest heroes. From its nostrils smoke coils "
+                "into the air.");
+  Weapon *flameBreath = new Weapon(
+      "flameBreath",
+      "The unholy power to emit fire and cast it upon your enemies", 100);
+  redDragon->addItem(flameBreath);
+  Food *dragonMeat =
+      new Food("dragonMeat", "Tough meat from the flesh of a dragon", 300);
+  redDragon->addItem(dragonMeat);
+
+  Room *plains = new Room(
+      "The empty plains",
+      "You come to the great salt plains that mark the border of King "
+      "Erebus' realm. The scorching sun and salty soil prevent anything "
+      "from growing here. You don't want to go any farther than this, for "
+      "death awaits anyone tries to cross this barren land"
+      "\n\nThe trail goes east");
+
   // basically creating a linked list of rooms
   home->setEast(field);
   field->setEast(rockyArea);
-
-  /*
-   * The fourth area on the map
-   */
+  forest->setNorth(rockyArea);
+  dragonLair->setEast(forest);
+  dragonLair->setWest(plains);
 
   _rooms.push_back(home);
   _rooms.push_back(field);
   _rooms.push_back(rockyArea);
+  _rooms.push_back(dragonLair);
+  _rooms.push_back(plains);
 
   return 0;
 }
