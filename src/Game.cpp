@@ -539,6 +539,7 @@ int Game::initWorldMap() {
   _rooms.push_back(home);
   _rooms.push_back(field);
   _rooms.push_back(rockyArea);
+  _rooms.push_back(forest);
   _rooms.push_back(dragonLair);
   _rooms.push_back(plains);
 
