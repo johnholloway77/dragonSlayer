@@ -57,13 +57,21 @@ std::string Room::listCreatures() {
 }
 
 void Room::addItem(Item* item) {
+  if (!item) {
+    return;  // return if null item
+  }
+
   if (!item->getOwner().has_value()) {
     item->setOwner(this);
   } else {
-    std::visit([item](auto&& owner) { owner->removeItem(item); },
-               item->getOwner().value());
+    try {
+      std::visit([item](auto&& owner) { owner->removeItem(item); },
+                 item->getOwner().value());
 
-    item->setOwner(this);
+      item->setOwner(this);
+    } catch (const std::bad_variant_access ex) {
+      return;
+    }
   }
 
   _inventory.push_back(item);

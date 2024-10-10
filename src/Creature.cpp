@@ -14,6 +14,7 @@
 #include "../include/Creature.h"
 #include "../include/Food.h"
 #include "../include/Item.h"
+#include "../include/Player.h"
 #include "../include/Weapon.h"
 
 std::string Creature::getName() { return _name; }
@@ -77,6 +78,10 @@ void Creature::hurt(int damage) {
   _health = _health - damage;
 
   if (!isAlive()) {
+    if (dynamic_cast<Player*>(this)) {
+      return;
+    }
+
     _setDescription(_name + " is dead");
     for (Item* item : _inventory) {
       _currentRoom->addItem(item);
@@ -92,7 +97,7 @@ std::string Creature::attack(Creature* creature, Item* item) {
   std::string response;
 
   if (Weapon* s = dynamic_cast<Weapon*>(item)) {
-    int damage = 0;
+    int damage;
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
     std::uniform_int_distribution<> distribution(1, 10);
@@ -107,7 +112,7 @@ std::string Creature::attack(Creature* creature, Item* item) {
 }
 std::string Creature::attack(Creature* creature) {
   std::string response;
-  int damage = 0;
+  int damage;
 
   std::random_device randomDevice;
   std::mt19937 gen(randomDevice());

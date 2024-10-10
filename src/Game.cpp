@@ -551,21 +551,21 @@ int Game::initWorldMap() {
                " You come to a rocky cliff side. In front of the cliffs "
                " At the bottom of the cliff is a mound of rock and human "
                "skulls, capped with gold coins and fine treasure."
-               " It is the nest of the great red dragon!"
+               " It is the nest of the great dragon!"
                "\n\n The trail goes east, south and west");
-  Enemy *redDragon =
-      new Enemy("redDragon", 200,
-                "The great red dragon is a beast that brings terror to the "
+  Enemy *dragon =
+      new Enemy("dragon", 200,
+                "The great  dragon is a beast that brings terror to the "
                 "hearts of the bravest heroes. From its nostrils smoke coils "
                 "into the air.");
   Weapon *flameBreath = new Weapon(
       "flameBreath",
       "The unholy power to emit fire and cast it upon your enemies", 100);
-  redDragon->addItem(flameBreath);
+  dragon->addItem(flameBreath);
   Food *dragonMeat =
       new Food("dragonMeat", "Tough meat from the flesh of a dragon", 300);
-  redDragon->addItem(dragonMeat);
-  dragonLair->addCreature(redDragon);
+  dragon->addItem(dragonMeat);
+  dragonLair->addCreature(dragon);
 
   Room *plains = new Room(
       "The empty plains",
