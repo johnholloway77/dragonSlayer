@@ -33,23 +33,27 @@ std::string Room::getDescription() { return _description; }
 
 std::string Room::listItems() {
   std::string response;
-  for (const Item* item : _inventory) {
-    response += "- " + item->getName() + "\n";
-  }
+
+  std::for_each(_inventory.begin(), _inventory.end(),
+                [&response](const Item* item) {
+                  response += "- " + item->getName() + "\n";
+                });
+
   return response;
 }
 
 std::string Room::listCreatures() {
-  std::string repsonse;
+  std::string response;
   if (!_creatures.empty()) {
-    for (Creature* creature : _creatures) {
-      repsonse += "- " + creature->getName();
-    }
+    std::for_each(_creatures.begin(), _creatures.end(),
+                  [&response](Creature* creature) {
+                    response += "- " + creature->getName() + "\n";
+                  });
   } else {
-    repsonse = "Nothing stands here";
+    response = "Nothing stands here";
   }
 
-  return repsonse;
+  return response;
 }
 
 void Room::addItem(Item* item) {

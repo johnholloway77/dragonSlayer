@@ -130,11 +130,14 @@ int Game::welcomeMessage() {
 }
 
 int Game::loadRoom(const std::string &roomName) {
-  for (Room *room : _rooms) {
-    if (room && room->getName() == roomName) {
-      loadRoom(room);
-      return 0;
-    }
+  auto tempRooms = _rooms;
+  auto iterator = std::find_if(
+      tempRooms.begin(), tempRooms.end(), [&roomName, this](Room *room) {
+        return room && _toLower(roomName) == room->getName();
+      });
+  if (iterator != tempRooms.end()) {
+    loadRoom(*iterator);
+    return 0;
   }
 
   return -1;
@@ -209,23 +212,28 @@ int Game::getCommand() {
             currentWord = words.front();
             words.erase(words.begin());
 
-            /*
-             * Need to create something to search through Room's creatures and
-             * items Call the appropriate look method.
-             *
-             */
-            for (Creature *creature : _currentRoom->getCreatures()) {
-              if (currentWord == _toLower(creature->getName())) {
-                look(creature);
-                return 0;
-              }
+            auto tempRoomCreatures = _currentRoom->getCreatures();
+            auto iteratorCreature = std::find_if(
+                tempRoomCreatures.begin(), tempRoomCreatures.end(),
+                [&currentWord, this](Creature *creature) {
+                  return currentWord == _toLower(creature->getName());
+                });
+
+            if (iteratorCreature != tempRoomCreatures.end()) {
+              look(*iteratorCreature);
+              return 0;
             }
 
-            for (Item *item : _currentRoom->getInventory()) {
-              if (currentWord == _toLower(item->getName())) {
-                look(item);
-                return 0;
-              }
+            auto tempRoomInventory = _currentRoom->getInventory();
+            auto iterator =
+                std::find_if(tempRoomInventory.begin(), tempRoomInventory.end(),
+                             [&currentWord, this](const Item *item) {
+                               return currentWord == _toLower(item->getName());
+                             });
+
+            if (iterator != tempRoomInventory.end()) {
+              look(*iterator);
+              return 0;
             }
 
             invalidCommand(_inputText, _currentRoom);
@@ -294,11 +302,15 @@ int Game::getCommand() {
         currentWord = words.front();
         words.erase(words.begin());
 
-        for (Item *item : _currentRoom->getInventory()) {
-          if (currentWord == _toLower(item->getName())) {
-            _player->addItem(item);
-            return loadRoom(_currentRoom, 'p', item);
-          }
+        auto tempRoomInventory = _currentRoom->getInventory();
+        auto iterator =
+            std::find_if(tempRoomInventory.begin(), tempRoomInventory.end(),
+                         [&currentWord, this](const Item *item) {
+                           return currentWord == _toLower(item->getName());
+                         });
+
+        if (iterator != tempRoomInventory.end()) {
+          return loadRoom(_currentRoom, 'p', *iterator);
         }
 
         customResponse("Pickup what?");
@@ -312,19 +324,35 @@ int Game::getCommand() {
         currentWord = words.front();
         words.erase(words.begin());
 
-        for (Item *item : _player->getInventory()) {
-          if (currentWord == _toLower(item->getName())) {
-            customResponse(_player->useItem(item));
-            return 0;
-          }
+        auto tempPlayerInventory = _player->getInventory();
+
+        auto iteratorPlayerInventory =
+            std::find_if(tempPlayerInventory.begin(), tempPlayerInventory.end(),
+                         [&currentWord, this](const Item *item) {
+                           return currentWord == _toLower(item->getName());
+                         });
+
+        if (iteratorPlayerInventory != tempPlayerInventory.end()) {
+          customResponse(_player->useItem(*iteratorPlayerInventory));
+
+          return 0;
         }
 
-        for (const Item *item : _currentRoom->getInventory()) {
-          if (currentWord == _toLower(item->getName())) {
-            customResponse("You cannot eat " + item->getName() +
-                           " unless you pick it up first");
-            return 0;
-          }
+        /// This response will occur only if the player doesn't have the item in
+        /// their inventory
+        auto tempRoomInventory = _currentRoom->getInventory();
+
+        auto iterator =
+            std::find_if(tempRoomInventory.begin(), tempRoomInventory.end(),
+                         [&currentWord, this](const Item *item) {
+                           return currentWord == _toLower(item->getName());
+                         });
+
+        if (iterator != tempRoomInventory.end()) {
+          customResponse("You cannot eat " + (*iterator)->getName() +
+                         " unless you pick it up first");
+
+          return 0;
         }
       }
       customResponse("Eat what?");
@@ -345,11 +373,17 @@ int Game::getCommand() {
                   currentWord = words.front();
                   words.erase(words.begin());
 
-                  for (Item *item : _player->getInventory()) {
-                    if (currentWord == _toLower(item->getName())) {
-                      customResponse(_player->attack(creature, item));
-                      return 0;
-                    }
+                  auto tempInventory = _player->getInventory();
+
+                  auto iterator = std::find_if(
+                      tempInventory.begin(), tempInventory.end(),
+                      [&currentWord, this](const Item *item) {
+                        return currentWord == _toLower(item->getName());
+                      });
+
+                  if (iterator != tempInventory.end()) {
+                    customResponse(_player->attack(creature, *iterator));
+                    return 0;
                   }
                 }
 
@@ -374,12 +408,18 @@ int Game::getCommand() {
                 currentWord = words.front();
                 words.erase(words.begin());
 
-                for (Item *item : _player->getInventory()) {
-                  if (currentWord == _toLower(item->getName())) {
-                    customResponse("self injury! " +
-                                   _player->attack(_player, item));
-                    return 0;
-                  }
+                auto tempInventory = _player->getInventory();
+
+                auto iterator = std::find_if(
+                    tempInventory.begin(), tempInventory.end(),
+                    [&currentWord, this](const Item *item) {
+                      return currentWord == _toLower(item->getName());
+                    });
+
+                if (iterator != tempInventory.end()) {
+                  customResponse("self injury! " +
+                                 _player->attack(_player, *iterator));
+                  return 0;
                 }
               }
 
