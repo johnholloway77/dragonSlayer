@@ -69,7 +69,7 @@ void Room::addItem(Item* item) {
                  item->getOwner().value());
 
       item->setOwner(this);
-    } catch (const std::bad_variant_access ex) {
+    } catch (const std::bad_variant_access& ex) {
       return;
     }
   }
