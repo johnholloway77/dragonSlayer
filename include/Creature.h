@@ -19,7 +19,7 @@ class Creature {
   bool _alive;
   Room* _currentRoom = nullptr;
 
-  void _setDescription(std::string newDesc) { _description = newDesc; }
+  void _setDescription(const std::string& newDesc) { _description = newDesc; }
 
  public:
   Creature(const std::string& name, int health) : _name(name), _health(health) {

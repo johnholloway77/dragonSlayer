@@ -89,9 +89,9 @@ std::vector<Item*> Creature::getInventory() { return _inventory; }
 
 std::string Creature::attack(Creature* creature, Item* item) {
   std::string response;
-  int damage = 0;
 
   if (Weapon* s = dynamic_cast<Weapon*>(item)) {
+    int damage = 0;
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
     std::uniform_int_distribution<> distribution(1, 10);
@@ -112,12 +112,14 @@ std::string Creature::attack(Creature* creature) {
   std::mt19937 gen(randomDevice());
   std::uniform_int_distribution<> distribution(1, 10);
 
-  for (Item* item : _inventory) {
-    if (Weapon* s = dynamic_cast<Weapon*>(item)) {
-      std::random_device randomDevice;
-      std::mt19937 gen(randomDevice());
-      std::uniform_int_distribution<> distribution(1, 10);
-      damage = distribution(randomDevice) * s->getDamage();
+  for (const Item* item : _inventory) {
+    auto iterator =
+        std::find_if(_inventory.begin(), _inventory.end(),
+                     [](Item* item) { return dynamic_cast<Weapon*>(item); });
+
+    if (iterator != _inventory.end()) {
+      Weapon* w = dynamic_cast<Weapon*>(*iterator);
+      damage = distribution(randomDevice) * w->getDamage();
       creature->hurt(damage);
       return "In retaliation " + this->getName() + "  attacked " +
              creature->getName() + " with " + item->getName() + " for " +
