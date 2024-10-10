@@ -37,7 +37,7 @@ class Room {
 
   void setAll(Room *north, Room *east, Room *south, Room *west);
 
-  Room(std::string name) : _name(name){};
+  explicit Room(std::string name) : _name(name){};
   Room(std::string name, bool accessable, std::string desc)
       : _name(name), _accessable(accessable), _description(desc){};
   Room(std::string name, std::string desc) : _name(name), _description(desc){};

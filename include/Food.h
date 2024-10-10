@@ -16,7 +16,7 @@ class Food : public Item {
 
   int getHealth();
 
-  Food(const std::string& name) : Item(name){};
+  explicit Food(const std::string& name) : Item(name){};
   Food(const std::string& name, const std::string& desc) : Item(name, desc){};
   Food(const std::string& name, int health) : Item(name) { _health = health; };
   Food(const std::string& name, const std::string& desc, int health)

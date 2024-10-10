@@ -13,7 +13,7 @@ class Weapon : public Item {
  public:
   std::string getType() const override { return "Weapon"; }
 
-  Weapon(const std::string& name) : Item(name){};
+  explicit Weapon(const std::string& name) : Item(name){};
   Weapon(const std::string& name, const std::string& desc) : Item(name, desc){};
   Weapon(const std::string& name, const std::string& desc, int damage)
       : Item(name, desc) {

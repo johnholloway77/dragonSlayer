@@ -13,7 +13,6 @@
 #include "../include/Creature.h"
 #include "../include/Food.h"
 #include "../include/Item.h"
-#include "../include/Room.h"
 #include "../include/Weapon.h"
 
 std::string Creature::getName() { return _name; }
@@ -44,10 +43,11 @@ Room* Creature::getCurrentRoom() { return _currentRoom; }
 
 void Creature::setCurrentRoom(Room* room) {
   if (_currentRoom) {
-    _currentRoom = room;
-    // room->addCreature()
-  } else {
     _currentRoom->removeCreature(this);
+  }
+  _currentRoom = room;
+
+  if (_currentRoom) {
     _currentRoom = room;
   }
 }
@@ -65,7 +65,6 @@ std::string Creature::useItem(Item* item) {
     std::visit([item](auto&& owner) { owner->removeItem(item); },
                item->getOwner().value());
     delete item;
-    ;
   }
 
   return response;
