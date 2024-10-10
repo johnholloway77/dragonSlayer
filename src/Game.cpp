@@ -18,8 +18,8 @@ Game::Game() {
   std::cout << "\033[?1049h";
   fflush(stdout);
 
-  // setlocale(LC_ALL, "");
-  setlocale(LC_ALL, "C.UTF-8");
+  setlocale(LC_ALL, "");
+  // setlocale(LC_ALL, "C.UTF-8");
 
   initscr();
   cbreak();
@@ -485,6 +485,27 @@ int Game::initWorldMap() {
       "\n\n The trail in front goes South and East");
   Food *muffin = new Food("muffin");
   home->addItem(muffin);
+
+  /*
+   * South of home
+   */
+  Room *boneYard = new Room(
+      "BoneYard",
+      " You are outside of the boneyard, the necropolis of this kingdom. Here "
+      "the bodies of those charred by the great dragon are tossed into pits. "
+      "An ignoble fate for those who fail to slay the great beast. You had put "
+      "your roommate's carcass here after the dragon burned down your cottage. "
+      "The universe brought him just desserts for never cleaning his side of "
+      "the cottage."
+      "\n\n Some of the bones look like they would make a good club for "
+      "smacking things");
+  Weapon *bone = new Weapon(
+      "bone", "The arm bone of your jerk roommate. How humourous", 3);
+  boneYard->addItem(bone);
+  Enemy *vulture = new Enemy("Vulture", 10,
+                             "A large bird that has been scavenging from the "
+                             "bodies cast into the pits");
+  boneYard->addCreature(vulture);
   /*
    *  The second area on the map
    */
@@ -577,12 +598,14 @@ int Game::initWorldMap() {
 
   // basically creating a linked list of rooms
   home->setEast(field);
+  home->setSouth(boneYard);
   field->setEast(rockyArea);
   forest->setNorth(rockyArea);
   dragonLair->setEast(forest);
   dragonLair->setWest(plains);
 
   _rooms.push_back(home);
+  _rooms.push_back(boneYard);
   _rooms.push_back(field);
   _rooms.push_back(rockyArea);
   _rooms.push_back(forest);
