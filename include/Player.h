@@ -1,20 +1,21 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
+#include <string>
 #include <vector>
 
 #include "Creature.h"
 #include "Item.h"
 
-#ifndef DRAGONSLAYER_PLAYER_H
-#define DRAGONSLAYER_PLAYER_H
+#ifndef INCLUDE_PLAYER_H_
+#define INCLUDE_PLAYER_H_
 
 class Player : public Creature {
  public:
-  Player(const std::string& name, int health) : Creature(name, health){};
+  Player(const std::string& name, int health) : Creature(name, health) {}
   Player(const std::string& name, int health, const std::string& desc)
-      : Creature(name, health, desc){};
+      : Creature(name, health, desc) {}
 
   std::string getType() const override { return "Player"; }
 
@@ -25,4 +26,4 @@ class Player : public Creature {
   std::string attack(Creature* creature, Item* item) override;
 };
 
-#endif  // DRAGONSLAYER_PLAYER_H
+#endif  // INCLUDE_PLAYER_H_

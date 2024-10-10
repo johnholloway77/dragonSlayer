@@ -1,5 +1,5 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include "../include/Item.h"
@@ -8,7 +8,7 @@
 
 #include "../include/Room.h"
 
-std::string Item::getName() const { return _name; };
+std::string Item::getName() const { return _name; }
 
 std::string Item::getDescription() const { return _description; }
 

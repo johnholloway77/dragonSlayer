@@ -1,9 +1,9 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
-#ifndef DRAGONSLAYER_ROOM_H
-#define DRAGONSLAYER_ROOM_H
+#ifndef INCLUDE_ROOM_H_
+#define INCLUDE_ROOM_H_
 
 #include <string>
 #include <vector>
@@ -35,11 +35,11 @@ class Room {
 
   void setWest(Room *west);
 
-  explicit Room(std::string &name) : _name(name){};
+  explicit Room(std::string &name) : _name(name) {}
   Room(const std::string &name, bool accessable, const std::string &desc)
-      : _name(name), _accessable(accessable), _description(desc){};
+      : _name(name), _accessable(accessable), _description(desc) {}
   Room(const std::string &name, const std::string &desc)
-      : _name(name), _description(desc){};
+      : _name(name), _description(desc) {}
 
   std::string getName();
   std::string getDescription();
@@ -62,4 +62,4 @@ class Room {
   ~Room();
 };
 
-#endif  // DRAGONSLAYER_ROOM_H
+#endif  // INCLUDE_ROOM_H_

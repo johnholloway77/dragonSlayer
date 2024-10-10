@@ -1,5 +1,5 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include "../include/Weapon.h"

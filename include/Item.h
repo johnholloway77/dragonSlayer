@@ -1,13 +1,13 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include <optional>
 #include <string>
 #include <variant>
 
-#ifndef DRAGONSLAYER_ITEM_H
-#define DRAGONSLAYER_ITEM_H
+#ifndef INCLUDE_ITEM_H_
+#define INCLUDE_ITEM_H_
 
 class Creature;
 class Room;
@@ -23,9 +23,9 @@ class Item {
   std::optional<std::variant<Creature*, Room*>> _owner = std::nullopt;
 
  public:
-  Item(const std::string& name) : _name(name){};
+  explicit Item(const std::string& name) : _name(name) {}
   Item(const std::string& name, const std::string& desc)
-      : _name(name), _description(desc){};
+      : _name(name), _description(desc) {}
 
   virtual std::string getType() const = 0;
 
@@ -34,7 +34,7 @@ class Item {
   std::optional<std::variant<Creature*, Room*>> getOwner();
   void setOwner(std::variant<Creature*, Room*> newOwner);
 
-  virtual ~Item(){};
+  virtual ~Item() {}
 };
 
-#endif  // DRAGONSLAYER_ITEM_H
+#endif  // INCLUDE_ITEM_H_

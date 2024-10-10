@@ -1,5 +1,5 @@
 //
-// Created by jholloway on 10/7/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include "../include/Enemy.h"

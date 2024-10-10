@@ -1,5 +1,5 @@
 //
-// Created by jholloway on 10/7/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include <string>
@@ -8,17 +8,17 @@
 #include "Creature.h"
 #include "Weapon.h"
 
-#ifndef DRAGONSLAYER_ENEMY_H
-#define DRAGONSLAYER_ENEMY_H
+#ifndef INCLUDE_ENEMY_H_
+#define INCLUDE_ENEMY_H_
 
 class Enemy : public Creature {
  public:
   Enemy(const std::string& name, int health, const std::string& desc)
-      : Creature(name, health, desc){};
+      : Creature(name, health, desc) {}
 
   std::string getType() const override { return "Enemy"; }
 
   std::string attack(Creature* creature, Weapon* weapon);
 };
 
-#endif  // DRAGONSLAYER_ENEMY_H
+#endif  // INCLUDE_ENEMY_H_

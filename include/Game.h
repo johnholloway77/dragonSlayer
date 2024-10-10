@@ -1,15 +1,17 @@
 //
-// Created by jholloway on 10/7/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
-#ifndef DRAGONSLAYER_GAME_H
-#define DRAGONSLAYER_GAME_H
+#ifndef INCLUDE_GAME_H_
+#define INCLUDE_GAME_H_
 
 #include <ncurses.h>
 #include <unistd.h>
 
+#include <algorithm>
 #include <cctype>
 #include <string>
+#include <vector>
 
 #include "Player.h"
 #include "Room.h"
@@ -77,4 +79,4 @@ class Game {
   int deadScreen();
 };
 
-#endif  // DRAGONSLAYER_GAME_H
+#endif  // INCLUDE_GAME_H_

@@ -1,9 +1,11 @@
 //
-// Created by jholloway on 10/6/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
-#ifndef DRAGONSLAYER_CREATURE_H
-#define DRAGONSLAYER_CREATURE_H
+#ifndef INCLUDE_CREATURE_H_
+#define INCLUDE_CREATURE_H_
+#include <string>
+#include <vector>
 
 #include "Item.h"
 #include "Room.h"
@@ -24,16 +26,16 @@ class Creature {
  public:
   Creature(const std::string& name, int health) : _name(name), _health(health) {
     _alive = true;
-  };
+  }
   Creature(const std::string& name, int health, const std::string& desc)
       : _name(name), _health(health), _description(desc) {
     _alive = true;
-  };
+  }
   virtual ~Creature() {
     for (Item* item : _inventory) {
       delete item;
     }
-  };
+  }
 
   virtual std::string getType() const = 0;
   void addItem(Item* item);
@@ -54,4 +56,4 @@ class Creature {
   std::vector<Item*> getInventory();
 };
 
-#endif  // DRAGONSLAYER_CREATURE_H
+#endif  // INCLUDE_CREATURE_H_

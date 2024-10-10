@@ -1,13 +1,14 @@
 //
-// Created by jholloway on 10/7/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
-#ifndef DRAGONSLAYER_TEXT_H
-#define DRAGONSLAYER_TEXT_H
+#ifndef INCLUDE_GAMETEXT_H_
+#define INCLUDE_GAMETEXT_H_
 
 #include <string>
 
-std::string title =
+namespace GameText {
+const char title[] =
     "\n"
     "████████▄     ▄████████    ▄████████    ▄██████▄   ▄██████▄  ███▄▄▄▄      "
     "        \n"
@@ -48,7 +49,7 @@ std::string title =
     "               2024 J. Holloway, Dorgee Lama, and John Nisperos           "
     "        \n";
 
-std::string title2 =
+const char title2[] =
     "      d8b                                                \n"
     "      88P                                                \n"
     "     d88                                                 \n"
@@ -72,7 +73,7 @@ std::string title2 =
 
     "  2024 J. Holloway, Dorgee Lama, and John Nisperos       \n";
 
-std::string welcomeText =
+const char welcomeText[] =
     "You are but a humble peasant, hoping for a life of adventure and riches!\n"
     "You hear rumors of wild beasts roaming the land and great monsters "
     "terrorizing the kingdom\n"
@@ -81,4 +82,6 @@ std::string welcomeText =
     "\n"
     "Will you heed the call of adventure?";
 
-#endif  // DRAGONSLAYER_TEXT_H
+}  // namespace GameText
+
+#endif  // INCLUDE_GAMETEXT_H_

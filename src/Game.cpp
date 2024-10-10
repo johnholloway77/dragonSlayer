@@ -1,5 +1,5 @@
 //
-// Created by jholloway on 10/7/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos"
 //
 
 #include "../include/Game.h"
@@ -11,8 +11,8 @@
 
 #include "../include/Enemy.h"
 #include "../include/Food.h"
+#include "../include/GameText.h"
 #include "../include/Player.h"
-#include "../include/Text.h"
 
 Game::Game() {
   std::cout << "\033[?1049h";
@@ -79,9 +79,9 @@ int Game::loadTitle() {
   _title_win = newwin(_screen_height, _screen_width, 0, 0);
 
 #ifdef __linux__
-  mvwprintw(_title_win, 1, 1, title2.c_str());
+  mvwprintw(_title_win, 1, 1, GameText::title2);
 #else
-  mvwprintw(_title_win, 1, 1, title.c_str());
+  mvwprintw(_title_win, 1, 1, GameText::title);
 #endif
   wrefresh(_title_win);
   sleep(2);
@@ -116,7 +116,7 @@ int Game::welcomeMessage() {
   wclear(_display_win);
   mvwprintw(_display_win, _currentRow++, 1, "Welcome %s\n",
             _player->getName().c_str());
-  mvwprintw(_display_win, _currentRow++, 1, "%s\n", welcomeText.c_str());
+  mvwprintw(_display_win, _currentRow++, 1, "%s\n", GameText::welcomeText);
   wrefresh(_display_win);
 
   mvwprintw(_input_win, 1, 1, "Press Enter to begin");
@@ -437,7 +437,7 @@ int Game::getCommand() {
       customResponse("Attack who?");
 
     } else {
-      invalidCommand(_inputText, _currentRoom);
+      invalidCommand(currentWord, _currentRoom);
     }
 
   } else {
