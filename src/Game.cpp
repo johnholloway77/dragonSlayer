@@ -133,7 +133,7 @@ int Game::loadRoom(const std::string &roomName) {
   auto tempRooms = _rooms;
   auto iterator = std::find_if(
       tempRooms.begin(), tempRooms.end(), [&roomName, this](Room *room) {
-        return room && _toLower(roomName) == room->getName();
+        return room && _toLower(roomName) == _toLower(room->getName());
       });
   if (iterator != tempRooms.end()) {
     loadRoom(*iterator);
@@ -310,6 +310,7 @@ int Game::getCommand() {
                          });
 
         if (iterator != tempRoomInventory.end()) {
+          _player->addItem(*iterator);
           return loadRoom(_currentRoom, 'p', *iterator);
         }
 
