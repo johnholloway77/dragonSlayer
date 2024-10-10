@@ -19,6 +19,8 @@ staticAnalysis:
 buildTests:
   stage: build
   script:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y libncurses-dev
     - make
   artifacts:
     paths:
