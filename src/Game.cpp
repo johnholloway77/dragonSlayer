@@ -45,6 +45,13 @@ Game::Game() {
   // Do I even need these anymore?
   _input_win_width = _screen_width - 2;
   _display_win_width = _screen_width - 2;
+
+  initPlayer();
+  welcomeMessage();
+  initWorldMap();
+  loadRoom("Home");
+  while (getCommand() != -1) {
+  }
 }
 
 Game::~Game() {
