@@ -29,7 +29,6 @@ class Game {
   WINDOW *_input_win;
 
   Room *_currentRoom;
-  bool _validInput;
 
   char buffer[256];
   std::string _inputText;
@@ -39,13 +38,13 @@ class Game {
   Player *_player = nullptr;
   std::vector<Room *> _rooms;
 
+  std::string _toLower(const std::string &inString) {
+    std::string str = inString;
 
-  std::string _toLower(std::string inString){
-   std::string str = inString;
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
 
-   std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c){return  std::tolower(c);});
-
-   return str;
+    return str;
   }
 
  public:
@@ -55,23 +54,22 @@ class Game {
   int setDefaults();
   int loadTitle();
   int loadRoom(Room *room);
-  int loadRoom(Room *room, char c, Item *item);
-  int loadRoom(std::string roomName);
+  int loadRoom(Room *room, char c, const Item *item);
+  int loadRoom(const std::string &roomName);
   int initPlayer();
   int initWorldMap();
   int welcomeMessage();
   int getCommand();
-  int invalidCommand(std::string cmd, Room *room);
+  int invalidCommand(const std::string &cmd, Room *room);
 
-  void look(Player* p);
-  void look(std::string dir);
+  void look(Player *p);
+  void look(const std::string &dir);
   void look(Room *room);
   void look(Creature *creature);
   void look(Item *item);
-  void customResponse(std::string str);
+  void customResponse(const std::string &str);
 
-
-  void go(std::string dir);
+  void go(const std::string &dir);
   void go(Room *room);
 
   void helpScreen();

@@ -23,8 +23,6 @@ class Player : public Creature {
   std::string attack();
   std::string attack(Creature* creature) override;
   std::string attack(Creature* creature, Item* item) override;
-
-  ~Player(){};
 };
 
 #endif  // DRAGONSLAYER_PLAYER_H

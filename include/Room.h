@@ -35,18 +35,16 @@ class Room {
 
   void setWest(Room *west);
 
-  void setAll(Room *north, Room *east, Room *south, Room *west);
-
-  explicit Room(std::string name) : _name(name){};
-  Room(std::string name, bool accessable, std::string desc)
+  explicit Room(std::string &name) : _name(name){};
+  Room(const std::string &name, bool accessable, const std::string &desc)
       : _name(name), _accessable(accessable), _description(desc){};
-  Room(std::string name, std::string desc) : _name(name), _description(desc){};
+  Room(const std::string &name, const std::string &desc)
+      : _name(name), _description(desc){};
 
   std::string getName();
   std::string getDescription();
   std::string listItems();
   std::string listCreatures();
-  bool getAccessable();
 
   Room *getNorth();
   Room *getEast();

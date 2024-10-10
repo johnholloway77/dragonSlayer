@@ -12,9 +12,7 @@
 #include "../include/Enemy.h"
 #include "../include/Food.h"
 #include "../include/Player.h"
-#include "../include/Room.h"
 #include "../include/Text.h"
-#include "../include/Weapon.h"
 
 Game::Game() {
   std::cout << "\033[?1049h";
@@ -99,7 +97,7 @@ int Game::initPlayer() {
 
   if (_inputText == "exit" || _inputText == "EXIT") {
     return -1;
-  };
+  }
 
   _player = new Player(_inputText, 100, "Our lowly hero");
 
@@ -124,7 +122,7 @@ int Game::welcomeMessage() {
   return 0;
 }
 
-int Game::loadRoom(std::string roomName) {
+int Game::loadRoom(const std::string &roomName) {
   for (Room *room : _rooms) {
     if (room && room->getName() == roomName) {
       loadRoom(room);
@@ -314,7 +312,7 @@ int Game::getCommand() {
           }
         }
 
-        for (Item *item : _currentRoom->getInventory()) {
+        for (const Item *item : _currentRoom->getInventory()) {
           if (currentWord == _toLower(item->getName())) {
             customResponse("You cannot eat " + item->getName() +
                            " unless you pick it up first");
@@ -400,7 +398,7 @@ int Game::getCommand() {
   return 0;
 }
 
-int Game::invalidCommand(std::string cmd, Room *room) {
+int Game::invalidCommand(const std::string &cmd, Room *room) {
   setDefaults();
   wclear(_display_win);
   wclear(_input_win);
@@ -570,7 +568,7 @@ void Game::look(Player *player) {
   wrefresh(_input_win);
 }
 
-void Game::look(std::string dir) {
+void Game::look(const std::string &dir) {
   Room *room;
 
   if (dir == "north") {
@@ -674,7 +672,7 @@ void Game::look(Item *item) {
   wrefresh(_input_win);
 }
 
-void Game::customResponse(std::string str) {
+void Game::customResponse(const std::string &str) {
   setDefaults();
   wclear(_display_win);
   wclear(_input_win);
@@ -701,9 +699,9 @@ void Game::customResponse(std::string str) {
   }
   mvwprintw(_input_win, 1, 1, "Command: ");
   wrefresh(_input_win);
-};
+}
 
-void Game::go(std::string dir) {
+void Game::go(const std::string &dir) {
   setDefaults();
   wclear(_display_win);
   wclear(_input_win);
@@ -759,7 +757,7 @@ void Game::helpScreen() {
   mvwprintw(_input_win, 1, 1, "Command: ");
   wrefresh(_input_win);
 }
-int Game::loadRoom(Room *room, char c, Item *item) {
+int Game::loadRoom(Room *room, char c, const Item *item) {
   std::string actionString;
 
   if (c == 'p') {
@@ -778,10 +776,10 @@ int Game::loadRoom(Room *room, char c, Item *item) {
             actionString.c_str(), item->getName().c_str());
   mvwprintw(_display_win, _currentRow++, 1, "");
   mvwprintw(_display_win, _currentRow++, 1, "Location: %s",
-            _currentRoom->getName().c_str());
+            room->getName().c_str());
   mvwprintw(_display_win, _currentRow++, 1, "Description:");
   mvwprintw(_display_win, _currentRow++, 1, "%s",
-            _currentRoom->getDescription().c_str());
+            room->getDescription().c_str());
 
   wrefresh(_display_win);
 

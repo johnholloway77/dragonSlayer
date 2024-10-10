@@ -8,8 +8,6 @@
 #include <random>
 #include <string>
 
-#include "../include/Weapon.h"
-
 std::string Enemy::attack(Creature* creature, Weapon* weapon) {
   std::string response;
   int damage = 0;

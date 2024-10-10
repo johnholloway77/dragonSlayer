@@ -19,8 +19,6 @@ class Enemy : public Creature {
   std::string getType() const override { return "Enemy"; }
 
   std::string attack(Creature* creature, Weapon* weapon);
-
-  ~Enemy(){};
 };
 
 #endif  // DRAGONSLAYER_ENEMY_H

@@ -11,7 +11,6 @@
 
 #include "../include/Creature.h"
 #include "../include/Item.h"
-#include "../include/Room.h"
 
 Room::~Room() {
   for (Item* item : _inventory) {
@@ -25,14 +24,12 @@ Room::~Room() {
 Room* Room::getNorth() { return _north; }
 
 Room* Room::getEast() { return _east; }
-Room* Room::getSouth() { return _south; };
+Room* Room::getSouth() { return _south; }
 
 Room* Room::getWest() { return _west; }
 
 std::string Room::getName() { return _name; }
-std::string Room::getDescription() { return _description; };
-
-bool Room::getAccessable() { return _accessable; }
+std::string Room::getDescription() { return _description; }
 
 std::string Room::listItems() {
   std::string response;
@@ -113,13 +110,6 @@ void Room::setWest(Room* west) {
   if (!west->getEast()) {
     west->setEast(this);
   }
-}
-
-void Room::setAll(Room* north, Room* east, Room* south, Room* west) {
-  _north = north;
-  _east = east;
-  _south = south;
-  _west = west;
 }
 
 std::vector<Item*> Room::getInventory() { return _inventory; }

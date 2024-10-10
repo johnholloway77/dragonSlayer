@@ -24,7 +24,7 @@ class Item {
 
  public:
   Item(const std::string& name) : _name(name){};
-  Item(const std::string& name, const std::string desc)
+  Item(const std::string& name, const std::string& desc)
       : _name(name), _description(desc){};
 
   virtual std::string getType() const = 0;
