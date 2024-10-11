@@ -46,7 +46,9 @@ Game::Game() {
   _input_win_width = _screen_width - 2;
   _display_win_width = _screen_width - 2;
 
-  initPlayer();
+  if (initPlayer() != 0) {
+    return;
+  }
   welcomeMessage();
   initWorldMap();
   loadRoom("Home");
@@ -102,7 +104,7 @@ int Game::initPlayer() {
   wgetnstr(_input_win, buffer, sizeof(buffer) - 1);
   _inputText = std::string(buffer);
 
-  if (_inputText == "exit" || _inputText == "EXIT") {
+  if (_toLower(_inputText) == "exit") {
     return -1;
   }
 

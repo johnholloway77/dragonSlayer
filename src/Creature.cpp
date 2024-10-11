@@ -17,7 +17,13 @@
 #include "../include/Player.h"
 #include "../include/Weapon.h"
 
-std::string Creature::getName() { return _name; }
+std::string Creature::getName() {
+  if (!_name.empty()) {
+    return _name;
+  }
+
+  return "Name_Not_Provided";
+}
 
 std::string Creature::getDescription() { return _description; }
 
