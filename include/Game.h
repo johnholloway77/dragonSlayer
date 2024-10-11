@@ -18,6 +18,8 @@
 
 class Game {
  private:
+  bool _gameComplete;
+
   int _screen_height;
   int _screen_width;
   int _input_height;
@@ -77,6 +79,7 @@ class Game {
   void helpScreen();
 
   int deadScreen();
+  int winnerScreen();
 };
 
 #endif  // INCLUDE_GAME_H_

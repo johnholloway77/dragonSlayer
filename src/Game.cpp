@@ -149,8 +149,8 @@ int Game::loadRoom(const std::string &roomName) {
 
 int Game::loadRoom(Room *room) {
   if (dynamic_cast<ExitRoom *>(room)) {
-    customResponse(
-        "Exit room successfully detected! Insert winnerScreen() here!");
+    _gameComplete = true;
+    winnerScreen();
     return 0;
   }
 
@@ -217,6 +217,11 @@ int Game::getCommand() {
   }
 
   if (_player->isAlive()) {
+    if (_gameComplete) {
+      winnerScreen();
+      return 0;
+    }
+
     if (currentWord == "look") {
       if (!words.empty()) {
         currentWord = words.front();
@@ -897,6 +902,28 @@ int Game::deadScreen() {
 
   mvwprintw(_display_win, _currentRow++, 1, "%s %s is dead!!%s", u8"\U0001F480",
             _player->getName().c_str(), u8"\U0001F480");
+  mvwprintw(_display_win, _currentRow++, 1, "");
+  mvwprintw(_display_win, _currentRow++, 1,
+            "Exit and reload to try again in your quest",
+            _currentRoom->getName().c_str());
+  mvwprintw(_display_win, _currentRow++, 1, "Type \"exit\" to end game");
+
+  wrefresh(_display_win);
+
+  box(_input_win, 0, 0);
+  mvwprintw(_input_win, 1, 1, "Command: ");
+  wrefresh(_input_win);
+
+  return 0;
+}
+int Game::winnerScreen() {
+  setDefaults();
+  wclear(_display_win);
+  wclear(_input_win);
+
+  mvwprintw(_display_win, _currentRow++, 1,
+            "Congratulations %s you have beat the game!",
+            _player->getName().c_str());
   mvwprintw(_display_win, _currentRow++, 1, "");
   mvwprintw(_display_win, _currentRow++, 1,
             "Exit and reload to try again in your quest",
