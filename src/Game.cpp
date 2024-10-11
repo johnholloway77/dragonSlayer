@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include "../include/Enemy.h"
+#include "../include/ExitRoom.h"
 #include "../include/Food.h"
 #include "../include/GameText.h"
 #include "../include/Player.h"
@@ -147,6 +148,12 @@ int Game::loadRoom(const std::string &roomName) {
 }
 
 int Game::loadRoom(Room *room) {
+  if (dynamic_cast<ExitRoom *>(room)) {
+    customResponse(
+        "Exit room successfully detected! Insert winnerScreen() here!");
+    return 0;
+  }
+
   if (!room->isAccessable()) {
     customResponse("You cannot go that way right now");
     return 0;
@@ -608,8 +615,12 @@ int Game::initWorldMap() {
       "Castle", false,
       "With the dragon slayen you arrive at the castle of King "
       "Erebus. Knight salute you, maidens give you flowers. You are "
-      "the hero of this realm!",
+      "the hero of this realm!"
+      "\n\n To the south is the throne room of King Erebus the wise",
       dragon);
+
+  ExitRoom *exitRoom =
+      new ExitRoom("throneRoom", "The throne room of King Erebus");
 
   // basically creating a linked list of rooms
   home->setEast(field);
@@ -619,6 +630,7 @@ int Game::initWorldMap() {
   dragonLair->setEast(forest);
   dragonLair->setWest(plains);
   dragonLair->setSouth(castleEntrance);
+  castleEntrance->setSouth(exitRoom);
 
   _rooms.push_back(home);
   _rooms.push_back(boneYard);
@@ -628,6 +640,7 @@ int Game::initWorldMap() {
   _rooms.push_back(dragonLair);
   _rooms.push_back(plains);
   _rooms.push_back(castleEntrance);
+  _rooms.push_back(exitRoom);
 
   return 0;
 }
