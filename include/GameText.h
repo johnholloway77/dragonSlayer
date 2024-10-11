@@ -82,6 +82,49 @@ const char welcomeText[] =
     "\n"
     "Will you heed the call of adventure?";
 
+const char winnerText[] =
+    "               Congratulations %s you've won the game!\n"
+    "For slaying the dragon King Erebus grants you knighthood and a new "
+    "home\n\n"
+    "    |>>>                                                      |>>>\n"
+    "    |                     |>>>          |>>>                  |\n"
+    "    *                     |             |                     *\n"
+    "   / \\                    *             *                    / \\\n"
+    "  /___\\                 _/ \\           / \\_                 /___\\\n"
+    "  [   ]                |/   \\_________/   \\|                [   ]\n"
+    "  [ I ]                /     \\       /     \\                [ I ]\n"
+    "  [   ]_ _ _          /       \\     /       \\          _ _ _[   ]\n"
+    "  [   ] U U |        {#########}   {#########}        | U U [   ]\n"
+    "  [   ]====/          \\=======/     \\=======/          \\====[   ]\n"
+    "  [   ]    |           |   I |_ _ _ _| I   |           |    [   ]\n"
+    "  [___]    |_ _ _ _ _ _|     | U U U |     |_ _ _ _ _ _|    [___]\n"
+    "  \\===/  I | U U U U U |     |=======|     | U U U U U | I  \\===/\n"
+    "   \\=/     |===========| I   | + W + |   I |===========|     \\=/\n"
+    "    |  I   |           |     |_______|     |           |   I  |\n"
+    "    |      |           |     |||||||||     |           |      |\n"
+    "    |      |           |   I ||vvvvv|| I   |           |      |\n"
+    "_-_-|______|-----------|_____||     ||_____|-----------|______|-_-_\n"
+    "   /________\\         /______||     ||______\\         /________\\\n"
+    "  |__________|-------|________\\_____/________|-------|__________|\n"
+    "\n                  Enter \"exit\" to leave game";
+
+const char helpText[] =
+    "Commands - Enter the following\n"
+    "\n"
+    "\"exit\" or \"quit\" to end game\n\n"
+    "\"look\" followed by specified object\n"
+    "\t\"look west\" - look in a direction\n"
+    "\t\"look at DarkKnight\" - look in a item or creature\n"
+    "\t\"look inventory\" - Look at the player inventory\n"
+    "go - go in a direction\n"
+    "\t eg: go west\n"
+    "\n"
+    "pickup - pickup item\n"
+    "\t eg: \"pickup speer\" to pickup speer from current location\n"
+    "Attack - attack an enemy in the current location\n"
+    "\t\"Attack DarkKnight\" - attack the local enemy\n"
+    "\t\"Attack DarkKnight with muffin\" - attack enemy with inventory item\n";
+
 }  // namespace GameText
 
 #endif  // INCLUDE_GAMETEXT_H_

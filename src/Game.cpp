@@ -841,21 +841,7 @@ void Game::helpScreen() {
   wclear(_display_win);
   wclear(_input_win);
 
-  mvwprintw(_display_win, _currentRow++, 1, "Commands - Enter the following");
-  mvwprintw(_display_win, _currentRow++, 1, "");
-  mvwprintw(_display_win, _currentRow++, 1, "\"exit\" or \"quit\" to end game");
-
-  mvwprintw(_display_win, _currentRow++, 1, "\"look\" - look in a direction");
-  mvwprintw(_display_win, _currentRow++, 1,
-            "\tlook in a direction: eg \"look west\"");
-  mvwprintw(_display_win, _currentRow++, 1,
-            "\tlook in a item or creature: eg \"look at DarkKnight\"");
-
-  mvwprintw(_display_win, _currentRow++, 1, "\"go\" - go in a direction");
-  mvwprintw(_display_win, _currentRow++, 1, "\t eg: go west");
-  mvwprintw(_display_win, _currentRow++, 1, "");
-  mvwprintw(_display_win, _currentRow++, 1,
-            "I'll add some more if once implemented - John");
+  mvwprintw(_display_win, _currentRow++, 1, "%s", GameText::helpText);
 
   wrefresh(_display_win);
 
@@ -921,14 +907,8 @@ int Game::winnerScreen() {
   wclear(_display_win);
   wclear(_input_win);
 
-  mvwprintw(_display_win, _currentRow++, 1,
-            "Congratulations %s you have beat the game!",
+  mvwprintw(_display_win, _currentRow++, 1, GameText::winnerText,
             _player->getName().c_str());
-  mvwprintw(_display_win, _currentRow++, 1, "");
-  mvwprintw(_display_win, _currentRow++, 1,
-            "Exit and reload to try again in your quest",
-            _currentRoom->getName().c_str());
-  mvwprintw(_display_win, _currentRow++, 1, "Type \"exit\" to end game");
 
   wrefresh(_display_win);
 
