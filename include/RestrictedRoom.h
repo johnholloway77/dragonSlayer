@@ -1,11 +1,14 @@
 //
-// Created by jholloway on 10/11/24.
+// "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos
 //
 
-#ifndef DRAGONSLAYER_INCLUDE_RESTRICTEDROOM_H_
-#define DRAGONSLAYER_INCLUDE_RESTRICTEDROOM_H_
+#ifndef _INCLUDE_RESTRICTEDROOM_H_
+#define _INCLUDE_RESTRICTEDROOM_H_
+
+#include <string>
 
 #include "Enemy.h"
+
 class RestrictedRoom : public Room {
  private:
   Enemy *_boss = nullptr;
@@ -23,4 +26,4 @@ class RestrictedRoom : public Room {
   bool isAccessable() override;
 };
 
-#endif  // DRAGONSLAYER_INCLUDE_RESTRICTEDROOM_H_
+#endif  // _INCLUDE_RESTRICTEDROOM_H_
