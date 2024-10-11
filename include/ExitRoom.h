@@ -4,6 +4,7 @@
 
 #ifndef INCLUDE_EXITROOM_H_
 #define INCLUDE_EXITROOM_H_
+#include <string>
 
 #include "Game.h"
 #include "Room.h"
