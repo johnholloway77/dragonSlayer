@@ -2,8 +2,8 @@
 // "Copyright [2024] J. Holloway, Dorgee Lama, and John Nisperos
 //
 
-#ifndef _INCLUDE_RESTRICTEDROOM_H_
-#define _INCLUDE_RESTRICTEDROOM_H_
+#ifndef INCLUDE_RESTRICTEDROOM_H_
+#define INCLUDE_RESTRICTEDROOM_H_
 
 #include <string>
 
@@ -26,4 +26,4 @@ class RestrictedRoom : public Room {
   bool isAccessable() override;
 };
 
-#endif  // _INCLUDE_RESTRICTEDROOM_H_
+#endif  // INCLUDE_RESTRICTEDROOM_H_
