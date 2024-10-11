@@ -13,6 +13,7 @@
 #include "../include/Food.h"
 #include "../include/GameText.h"
 #include "../include/Player.h"
+#include "../include/RestrictedRoom.h"
 
 Game::Game() {
   std::cout << "\033[?1049h";
@@ -146,6 +147,11 @@ int Game::loadRoom(const std::string &roomName) {
 }
 
 int Game::loadRoom(Room *room) {
+  if (!room->isAccessable()) {
+    customResponse("You cannot go that way right now");
+    return 0;
+  }
+
   _currentRoom = room;
 
   setDefaults();
@@ -574,7 +580,7 @@ int Game::initWorldMap() {
                " You come to a rocky cliff side. In front of the cliffs "
                " At the bottom of the cliff is a mound of rock and human "
                "skulls, capped with gold coins and fine treasure."
-               " It is the nest of the great dragon!"
+               " Guarding the southern path is the nest of the great dragon!"
                "\n\n The trail goes east, south and west");
   Enemy *dragon =
       new Enemy("dragon", 200,
@@ -598,6 +604,13 @@ int Game::initWorldMap() {
       "death awaits anyone tries to cross this barren land"
       "\n\nThe trail goes east");
 
+  RestrictedRoom *castleEntrance = new RestrictedRoom(
+      "Castle", false,
+      "With the dragon slayen you arrive at the castle of King "
+      "Erebus. Knight salute you, maidens give you flowers. You are "
+      "the hero of this realm!",
+      dragon);
+
   // basically creating a linked list of rooms
   home->setEast(field);
   home->setSouth(boneYard);
@@ -605,6 +618,7 @@ int Game::initWorldMap() {
   forest->setNorth(rockyArea);
   dragonLair->setEast(forest);
   dragonLair->setWest(plains);
+  dragonLair->setSouth(castleEntrance);
 
   _rooms.push_back(home);
   _rooms.push_back(boneYard);
@@ -613,6 +627,7 @@ int Game::initWorldMap() {
   _rooms.push_back(forest);
   _rooms.push_back(dragonLair);
   _rooms.push_back(plains);
+  _rooms.push_back(castleEntrance);
 
   return 0;
 }

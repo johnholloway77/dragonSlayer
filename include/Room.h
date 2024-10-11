@@ -13,7 +13,7 @@
 class Item;
 
 class Room {
- private:
+ protected:
   Room *_north = nullptr;
   Room *_east = nullptr;
   Room *_south = nullptr;
@@ -58,6 +58,7 @@ class Room {
   void addCreature(Creature *creature);
   void removeCreature(Creature *creature);
   std::vector<Creature *> getCreatures();
+  virtual bool isAccessable();
 
   ~Room();
 };

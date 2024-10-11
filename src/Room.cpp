@@ -127,3 +127,4 @@ void Room::setWest(Room* west) {
 std::vector<Item*> Room::getInventory() { return _inventory; }
 
 std::vector<Creature*> Room::getCreatures() { return _creatures; }
+bool Room::isAccessable() { return _accessable; }
