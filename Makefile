@@ -8,15 +8,21 @@ else
     CXX := g++
 endif
 
+#directories
+SRC_DIR = src
+PROJECT_SRC_DIR = src/project
+GTEST_INCLUDE_DIR = /usr/local/include
+SRC_INCLUDE_DIR = include
+GTEST_DIR = test
+
 # Compiler flags (JHolloway is picky and likes to use all of the warnings!!)
 CXXFLAGS := -Wall -Wextra -std=c++17
 
 #debug stuff since John keeps getting segfaults
 DEBUG := -g -O0
 
-# Source files (main.cpp and all .cpp files in the src directory)
-SOURCES = main.cpp \
-    $(wildcard src/*.cpp)
+# Source files (main.cpp and all .cpp files in the project directory)
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(PROJECT_SRC_DIR)/*.cpp)
 
 # Object files (generated from source files)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -26,6 +32,7 @@ LIBS := -lncurses
 
 # Output binary
 BINARY = dragonSlayer
+GTEST_BINARY = test_${BINARY}
 
 # Rule to link the binary
 $(BINARY): $(OBJECTS)
@@ -54,12 +61,12 @@ clean-obj:
 # Test targets
 ################################################################################
 
-#directories
-SRC_DIR = src
-SRC_INCLUDE = include
-GTEST_DIR = test
 
-INCLUDE = -I ${SRC_INCLUDE}
+
+INCLUDE = -I ${SRC_INCLUDE_DIR} -I ${GTEST_INCLUDE_DIR}
+
+${GTEST_BINARY}: ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp
+	${CXX} $(CXXFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib -lgtest -lncurses
 
 # Tool variables
 STATIC_ANALYSIS = cppcheck
@@ -73,3 +80,7 @@ static:
 # To perform the style check
 style:
 	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
+
+#Check for memory leaks with Valgrind. Off to Valhalla we go!!
+memcheck: ${GTEST}
+	valgrind --tool=memcheck --leak-check=yes --error-exitcode=1 ./${GTEST_BINARY}

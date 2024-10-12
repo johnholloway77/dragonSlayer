@@ -19,7 +19,17 @@ staticAnalysis:
 buildTests:
   stage: build
   script:
-    - make
+    - make test_dragonSlayer
   artifacts:
     paths:
       - dragonSlayer
+
+unitTests:
+  stage: unit_test
+  script:
+    - test_dragonSlayer
+
+memoryLeaks:
+  stage: active_tests
+  script:
+    - make memcheck
