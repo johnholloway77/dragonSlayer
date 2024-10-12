@@ -41,6 +41,8 @@ $(BINARY): $(OBJECTS)
 # Tool variables
 STATIC_ANALYSIS = cppcheck
 STYLE_CHECK = cpplint
+DESIGN_DIR = docs/design
+DOXY_DIR = docs/code
 ################################################################################
 # Clean-up targets
 ################################################################################
@@ -59,6 +61,10 @@ clean-obj:
 .PHONY: clean-exec
 clean-exec:
 	rm -f $(GTEST_BINARY) $(BINARY)
+
+.PHONY: clean-docs
+clean-docs:
+	rm -rf docs/code/html
 ################################################################################
 # Test targets
 ################################################################################
@@ -82,6 +88,10 @@ memcheck: ${GTEST}
 
 test: ${GTEST_BINARY}
 	./${GTEST_BINARY}
+
+.PHONY: docs
+docs: ${PROJECT_SRC_DIR}
+	doxygen ${DOXY_DIR}/doxyfile
 
 compile: $(BINARY)
 

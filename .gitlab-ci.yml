@@ -1,4 +1,5 @@
 stages:
+  - documentation
   - quality
   - build
   - unit_test
@@ -7,6 +8,14 @@ stages:
 variables:
   GIT_STRATEGY: clone
   TIMEOUT: 10m
+
+docs:
+  stage: documentation
+  script:
+    - make docs
+  artifacts:
+    paths:
+      - docs/code/src
 
 styleCheck:
   stage: quality
