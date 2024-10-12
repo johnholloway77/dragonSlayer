@@ -12,7 +12,7 @@ endif
 SRC_DIR = src
 PROJECT_SRC_DIR = src/project
 GTEST_INCLUDE_DIR = /usr/local/include
-SRC_INCLUDE_DIR = include
+SRC_INCLUDE_DIR = ./include
 GTEST_DIR = test
 
 # Compiler flags (JHolloway is picky and likes to use all of the warnings!!)
@@ -75,11 +75,11 @@ STYLE_CHECK = cpplint
 # To perform the static check 
 static:
 	${STATIC_ANALYSIS} --verbose --enable=all ${SRC_DIR} ${GTEST_DIR} \
-	${SRC_INCLUDE} --suppress=missingInclude --error-exitcode=1
+	${SRC_INCLUDE_DIR} --suppress=missingInclude --error-exitcode=1
 
 # To perform the style check
 style:
-	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE}/*
+	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE_DIR}/*
 
 #Check for memory leaks with Valgrind. Off to Valhalla we go!!
 memcheck: ${GTEST}
