@@ -4,7 +4,7 @@
 
 #include "../include/Game.h"
 
-// #include <ncurses.h>
+#include <ncurses.h>
 
 #include <iostream>
 #include <sstream>
@@ -15,7 +15,6 @@
 #include "../include/GameText.h"
 #include "../include/Player.h"
 #include "../include/RestrictedRoom.h"
-#include "../include/ncurses.h"
 
 Game::Game() {
   std::cout << "\033[?1049h";
