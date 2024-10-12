@@ -1,6 +1,8 @@
 stages:
   - quality
   - build
+  - unit_test
+  - active_tests
 
 variables:
   GIT_STRATEGY: clone
