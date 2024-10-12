@@ -1,5 +1,4 @@
 stages:
-  - check
   - documentation
   - quality
   - build
@@ -9,17 +8,6 @@ stages:
 variables:
   GIT_STRATEGY: clone
   TIMEOUT: 10m
-
-check_plantuml:
-  stage: check
-  script:
-    - |
-      if ! command -v plantuml &> /dev/null; then
-        echo "Error: PlantUML is not installed."
-        exit 1
-      else
-        echo "PlantUML is installed!"
-      fi
 
 docs:
   stage: documentation
