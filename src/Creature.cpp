@@ -25,7 +25,7 @@ std::string Creature::getName() {
   return "Name_Not_Provided";
 }
 
-std::string Creature::getDescription() { return _description; }
+const std::string& Creature::getDescription() { return _description; }
 
 void Creature::addItem(Item* item) {
   if (!item->getOwner().has_value()) {
@@ -97,7 +97,7 @@ void Creature::hurt(int damage) {
 
 bool Creature::isAlive() { return _health > 0; }
 
-std::vector<Item*> Creature::getInventory() { return _inventory; }
+const std::vector<Item*>& Creature::getInventory() { return _inventory; }
 
 std::string Creature::attack(Creature* creature, Item* item) {
   std::string response;

@@ -45,7 +45,7 @@ class Creature {
   void setCurrentRoom(Room* room);
 
   std::string getName();
-  std::string getDescription();
+  const std::string& getDescription();
   std::string useItem(Item* item);
   int getHealth();
   void hurt(int damage);
@@ -53,7 +53,7 @@ class Creature {
   virtual std::string attack(Creature* creature, Item* item);
   virtual std::string attack(Creature* creature);
 
-  std::vector<Item*> getInventory();
+  const std::vector<Item*>& getInventory();
 };
 
 #endif  // INCLUDE_CREATURE_H_

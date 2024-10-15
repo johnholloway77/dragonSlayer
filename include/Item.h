@@ -29,8 +29,8 @@ class Item {
 
   virtual std::string getType() const = 0;
 
-  std::string getName() const;
-  std::string getDescription() const;
+  const std::string& getName() const;
+  const std::string& getDescription() const;
   std::optional<std::variant<Creature*, Room*>> getOwner();
   void setOwner(std::variant<Creature*, Room*> newOwner);
 

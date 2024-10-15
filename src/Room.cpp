@@ -28,8 +28,8 @@ Room* Room::getSouth() { return _south; }
 
 Room* Room::getWest() { return _west; }
 
-std::string Room::getName() { return _name; }
-std::string Room::getDescription() { return _description; }
+const std::string& Room::getName() { return _name; }
+const std::string& Room::getDescription() { return _description; }
 
 std::string Room::listItems() {
   std::string response;
@@ -124,7 +124,7 @@ void Room::setWest(Room* west) {
   }
 }
 
-std::vector<Item*> Room::getInventory() { return _inventory; }
+const std::vector<Item*>& Room::getInventory() { return _inventory; }
 
-std::vector<Creature*> Room::getCreatures() { return _creatures; }
+const std::vector<Creature*>& Room::getCreatures() { return _creatures; }
 bool Room::isAccessable() { return _accessable; }

@@ -41,8 +41,8 @@ class Room {
   Room(const std::string &name, const std::string &desc)
       : _name(name), _description(desc) {}
 
-  std::string getName();
-  std::string getDescription();
+  const std::string &getName();
+  const std::string &getDescription();
   std::string listItems();
   std::string listCreatures();
 
@@ -53,11 +53,11 @@ class Room {
 
   void addItem(Item *item);
   void removeItem(Item *item);
-  std::vector<Item *> getInventory();
+  const std::vector<Item *> &getInventory();
 
   void addCreature(Creature *creature);
   void removeCreature(Creature *creature);
-  std::vector<Creature *> getCreatures();
+  const std::vector<Creature *> &getCreatures();
   virtual bool isAccessable();
 
   ~Room();
