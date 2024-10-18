@@ -25,6 +25,7 @@ else
     INCLUDE = -I ${SRC_INCLUDE_DIR}
 endif
 CXXFLAGS := -Wall -Wextra -std=c++17
+CXXWITHCOVERAGEFLAGS = ${CXXFLAGS} -fprofile-instr-generate -fcoverage-mapping  #-fprofile-arcs -ftest-coverage
 DEBUG := -g -O0
 LIBS := -lncurses
 GTEST_LIB:= -lgtest
@@ -45,7 +46,7 @@ DESIGN_DIR = docs/design
 DOXY_DIR = docs/code
 COVERAGE_DIR = coverage
 GCOV = gcov
-LCOV = lcov
+LCOV = llvm-cov #lcov
 COVERAGE_RESULTS = results.coverage
 ################################################################################
 # Clean-up targets
@@ -78,8 +79,8 @@ clean-cov:
 clean-temp:
 	rm -rf *~ \#* .\#* \
 	${SRC_DIR}/*~ ${SRC_DIR}/\#* ${SRC_DIR}/.\#* \
-	${GTEST_DIR}/*~ ${GTEST_DIR}/\#* ${GTEST_DIR}/.\#* \
-	${SRC_INCLUDE}/*~ ${SRC_INCLUDE}/\#* ${SRC_INCLUDE}/.\#* \
+	${GTEST_INCLUDE_DIR}/*~ ${GTEST_INCLUDE_DIR}/\#* ${GTEST_INCLUDE_DIR}/.\#* \
+	${SRC_INCLUDE_DIR}/*~ ${SRC_INCLUDE_DIR}/\#* ${SRC_INCLUDE_DIR}/.\#* \
 	${PROJECT_SRC_DIR}/*~ ${PROJECT_SRC_DIR}/\#* ${PROJECT_SRC_DIR}/.\#* \
 	${DESIGN_DIR}/*~ ${DESIGN_DIR}/\#* ${DESIGN_DIR}/.\#* \
 	*.gcov *.gcda *.gcno
@@ -118,17 +119,31 @@ debug: CXXFLAGS += $(DEBUGFLAGS)
 debug: $(BINARY)
 
 # To perform the code coverage checks
+#.PHONY: coverage
+#coverage: clean-exec clean-cov
+##	${CXX} $(CXXWITHCOVERAGEFLAGS)  $(INCLUDE) -o ./${GTEST} ${SRC_DIR} \
+##	${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${GTEST_LIB}
+#	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib ${GTEST_LIB} ${LIBS}
+#	./${GTEST}
+#	# Determine code coverage
+#	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
+#	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
+#	# Only show code coverage for the source code files (not library files)
+#	${LCOV} --extract ${COVERAGE_RESULTS} */*/*/${SRC_DIR}/* -o \
+#	${COVERAGE_RESULTS}
+#	#Generate the HTML reports
+#	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
+#	#Remove all of the generated files from gcov
+#	make clean-temp
+#
+
+.PHONY: coverage
 coverage: clean-exec clean-cov
-	${CXX} ${CXXWITHCOVERAGEFLAGS} -o ./${GTEST} ${INCLUDE} \
-	${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${LINKFLAGS}
-	./${GTEST}
+	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -o ${GTEST_BINARY} ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp -L/usr/local/lib ${GTEST_LIB} ${LIBS}
+	LLVM_PROFILE_FILE="coverage.profraw" ./${GTEST_BINARY}
 	# Determine code coverage
-	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
-	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
-	# Only show code coverage for the source code files (not library files)
-	${LCOV} --extract ${COVERAGE_RESULTS} */*/*/${SRC_DIR}/* -o \
-	${COVERAGE_RESULTS}
-	#Generate the HTML reports
-	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
-	#Remove all of the generated files from gcov
-	make clean-temp
+	llvm-profdata merge -sparse coverage.profraw -o coverage.profdata
+	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_RESULTS}
+
+
+	gmake clean-temp
