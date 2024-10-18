@@ -43,6 +43,10 @@ STATIC_ANALYSIS = cppcheck
 STYLE_CHECK = cpplint
 DESIGN_DIR = docs/design
 DOXY_DIR = docs/code
+COVERAGE_DIR = coverage
+GCOV = gcov
+LCOV = lcov
+COVERAGE_RESULTS = results.coverage
 ################################################################################
 # Clean-up targets
 ################################################################################
@@ -65,6 +69,20 @@ clean-exec:
 .PHONY: clean-docs
 clean-docs:
 	rm -rf docs/code/html
+
+.PHONY: clean-cov
+clean-cov:
+	rm -rf *.gcov *.gcda *.gcno ${COVERAGE_RESULTS} ${COVERAGE_DIR}
+
+.PHONY: clean-temp
+clean-temp:
+	rm -rf *~ \#* .\#* \
+	${SRC_DIR}/*~ ${SRC_DIR}/\#* ${SRC_DIR}/.\#* \
+	${GTEST_DIR}/*~ ${GTEST_DIR}/\#* ${GTEST_DIR}/.\#* \
+	${SRC_INCLUDE}/*~ ${SRC_INCLUDE}/\#* ${SRC_INCLUDE}/.\#* \
+	${PROJECT_SRC_DIR}/*~ ${PROJECT_SRC_DIR}/\#* ${PROJECT_SRC_DIR}/.\#* \
+	${DESIGN_DIR}/*~ ${DESIGN_DIR}/\#* ${DESIGN_DIR}/.\#* \
+	*.gcov *.gcda *.gcno
 ################################################################################
 # Test targets
 ################################################################################
@@ -98,3 +116,19 @@ compile: $(BINARY)
 #debug for John to fight this program in gdb
 debug: CXXFLAGS += $(DEBUGFLAGS)
 debug: $(BINARY)
+
+# To perform the code coverage checks
+coverage: clean-exec clean-cov
+	${CXX} ${CXXWITHCOVERAGEFLAGS} -o ./${GTEST} ${INCLUDE} \
+	${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${LINKFLAGS}
+	./${GTEST}
+	# Determine code coverage
+	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
+	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
+	# Only show code coverage for the source code files (not library files)
+	${LCOV} --extract ${COVERAGE_RESULTS} */*/*/${SRC_DIR}/* -o \
+	${COVERAGE_RESULTS}
+	#Generate the HTML reports
+	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
+	#Remove all of the generated files from gcov
+	make clean-temp
