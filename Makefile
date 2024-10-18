@@ -20,12 +20,13 @@ GTEST_SOURCES= $(wildcard ${GTEST_DIR}/*.cpp) $(wildcard ${SRC_DIR}/*.cpp)
 ifeq ($(UNAME_S), FreeBSD)
     CXX := clang++
     INCLUDE = -I ${SRC_INCLUDE_DIR} -I ${GTEST_INCLUDE_DIR}
+    CXXWITHCOVERAGEFLAGS = ${CXXFLAGS} -fprofile-instr-generate -fcoverage-mapping  #-fprofile-arcs -ftest-coverage
 else
     CXX := g++
     INCLUDE = -I ${SRC_INCLUDE_DIR}
+	CXXWITHCOVERAGEFLAGS = ${CXXFLAGS} -fprofile-arcs -ftest-coverage
 endif
 CXXFLAGS := -Wall -Wextra -std=c++17
-CXXWITHCOVERAGEFLAGS = ${CXXFLAGS} -fprofile-instr-generate -fcoverage-mapping  #-fprofile-arcs -ftest-coverage
 DEBUG := -g -O0
 LIBS := -lncurses
 GTEST_LIB:= -lgtest
@@ -34,18 +35,19 @@ GTEST_LIB:= -lgtest
 OBJECTS = $(SOURCES:.cpp=.o)
 GTEST_OBJECTS = $(GTEST_SOURCES:.cpp=.o)
 
-
-
-
 # Tool variables
 STATIC_ANALYSIS = cppcheck
 STYLE_CHECK = cpplint
 DESIGN_DIR = docs/design
 DOXY_DIR = docs/code
 COVERAGE_DIR = coverage
-GCOV = gcov
-LCOV = llvm-cov #lcov
 COVERAGE_RESULTS = results.coverage
+ifeq ($(UNAME_S), FreeBSD)
+COV = llvm-cov
+else
+GCOV = gcov
+LCOV = lcov
+endif
 ################################################################################
 # Clean-up targets
 ################################################################################
@@ -164,6 +166,7 @@ debug: $(BINARY)
 #	#Remove all of the generated files from gcov
 #	make clean-temp
 #
+ifeq ($(UNAME_S), FreeBSD)
 
 .PHONY: coverage
 coverage: clean-exec clean-cov
@@ -175,3 +178,19 @@ coverage: clean-exec clean-cov
 
 
 	gmake clean-temp
+else
+.PHONY: coverage
+coverage: clean-exec clean-cov
+	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -L/usr/local/lib -o ${GTEST_BINARY} ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${GTEST_LIB} ${LIBS}
+	./${GTEST_BINARY}
+    # Determine code coverage
+	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
+	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
+	# Only show code coverage for the source code files (not library files)
+	${LCOV} --extract ${COVERAGE_RESULTS} */${SRC_DIR}/* */${GTEST_DIR}/* -o \
+	${COVERAGE_RESULTS}
+	#Generate the HTML reports
+	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
+	#Remove all of the generated files from gcov
+	make clean-temp
+endif
