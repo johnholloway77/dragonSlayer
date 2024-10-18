@@ -13,6 +13,7 @@ TEST(PlayerTest, defaultConstructorTest) {
 
   EXPECT_EQ(p->getName(), "testUser");
   EXPECT_EQ(p->getHealth(), 100);
+  EXPECT_EQ(p->getType(), "Player");
 
   delete p;
 }

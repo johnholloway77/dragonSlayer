@@ -14,7 +14,7 @@ GTEST_INCLUDE_DIR = /usr/local/include
 SRC_INCLUDE_DIR = ./include
 GTEST_DIR = test
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(PROJECT_SRC_DIR)/*.cpp)
-
+GTEST_SOURCES= $(wildcard ${GTEST_DIR}/*.cpp) $(wildcard ${SRC_DIR}/*.cpp)
 
 # Compiler variables and flags will depend if running on FreeBSD or Linux because John wants to learn cross compilation.
 ifeq ($(UNAME_S), FreeBSD)
@@ -29,14 +29,12 @@ CXXWITHCOVERAGEFLAGS = ${CXXFLAGS} -fprofile-instr-generate -fcoverage-mapping  
 DEBUG := -g -O0
 LIBS := -lncurses
 GTEST_LIB:= -lgtest
+
 # Object files (generated from source files)
 OBJECTS = $(SOURCES:.cpp=.o)
-# Rule to link the binary
-$(BINARY): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS) ${LIBS}
-# Rule to compile .cpp files into object files
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+GTEST_OBJECTS = $(GTEST_SOURCES:.cpp=.o)
+
+
 
 
 # Tool variables
@@ -110,8 +108,16 @@ endif
 # Test targets
 ################################################################################
 
-${GTEST_BINARY}: ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp
+# Rule to link the binary
+$(BINARY): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS) ${LIBS}
+
+${GTEST_BINARY}: $(GTEST_OBJECTS)
 	${CXX} $(CXXFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib ${GTEST_LIB} ${LIBS}
+
+# Rule to compile .cpp files into object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 # To perform the static check
 static:
