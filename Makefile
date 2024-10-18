@@ -71,9 +71,29 @@ clean-exec:
 clean-docs:
 	rm -rf docs/code/html
 
+
+ifeq ($(UNAME_S), FreeBSD)
+
+.PHONY: clean-cov
+clean-cov:
+	rm -rf *.profdata *profraw ${COVERAGE_RESULTS} ${COVERAGE_DIR}
+
+else
 .PHONY: clean-cov
 clean-cov:
 	rm -rf *.gcov *.gcda *.gcno ${COVERAGE_RESULTS} ${COVERAGE_DIR}
+
+endif
+
+
+
+ifeq ($(UNAME_S), FreeBSD)
+
+.PHONY: clean-temp
+clean-temp:
+	rm -rf *.profdata *profraw
+
+else
 
 .PHONY: clean-temp
 clean-temp:
@@ -84,6 +104,8 @@ clean-temp:
 	${PROJECT_SRC_DIR}/*~ ${PROJECT_SRC_DIR}/\#* ${PROJECT_SRC_DIR}/.\#* \
 	${DESIGN_DIR}/*~ ${DESIGN_DIR}/\#* ${DESIGN_DIR}/.\#* \
 	*.gcov *.gcda *.gcno
+
+endif
 ################################################################################
 # Test targets
 ################################################################################
@@ -139,11 +161,11 @@ debug: $(BINARY)
 
 .PHONY: coverage
 coverage: clean-exec clean-cov
-	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -o ${GTEST_BINARY} ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp -L/usr/local/lib ${GTEST_LIB} ${LIBS}
+	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -L/usr/local/lib -o ${GTEST_BINARY} ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${GTEST_LIB} ${LIBS}
 	LLVM_PROFILE_FILE="coverage.profraw" ./${GTEST_BINARY}
 	# Determine code coverage
 	llvm-profdata merge -sparse coverage.profraw -o coverage.profdata
-	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_RESULTS}
+	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_RESULTS} -ignore-filename-regex="/usr/local/include/gtest/.*"
 
 
 	gmake clean-temp
