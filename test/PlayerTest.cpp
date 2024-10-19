@@ -18,6 +18,17 @@ TEST(PlayerTest, defaultConstructorTest) {
   delete p;
 }
 
+TEST(PlayerTest, alternateConstructorTest) {
+  Player *p = new Player("testUser", 100, "testUser");
+
+  EXPECT_EQ(p->getName(), "testUser");
+  EXPECT_EQ(p->getHealth(), 100);
+  EXPECT_EQ(p->getType(), "Player");
+  EXPECT_EQ(p->getDescription(), "testUser");
+
+  delete p;
+}
+
 TEST(PlayerTest, addFoodItemTest) {
   Player *p = new Player("testUser", 100);
   Food *f = new Food("testFood");
@@ -76,6 +87,48 @@ TEST(PlayerTest, addFoodPoisonTest) {
   EXPECT_EQ(p->getHealth(), -50);
   EXPECT_EQ(p->getInventory().size(), 0);
   EXPECT_EQ(p->isAlive(), false);
+
+  delete p;
+}
+
+TEST(PlayerTest, attackAtNothingtest) {
+  Player *p = new Player("testUser", 100);
+  EXPECT_EQ(p->attack(), "You attack at nothing and look like a fool!");
+  delete p;
+}
+
+TEST(PlayerTest, InventoryTest) {
+  Player *p = new Player("testUser", 100);
+  EXPECT_EQ(p->listInventory(), p->getName() + " has the following items\n");
+
+  delete p;
+}
+
+TEST(PlayerTest, FoodInventoryTest) {
+  Player *p = new Player("testUser", 100);
+  Food *f = new Food("testFood", -150);
+
+  p->addItem(f);
+  EXPECT_EQ(p->listInventory(), p->getName() +
+                                    " has the following items\n"
+                                    "- " +
+                                    f->getName() + " Type: " + f->getType() +
+                                    "\n" +
+                                    "\tNothing is known about this item\n");
+
+  delete p;
+}
+
+TEST(PlayerTest, WeaponInventoryTest) {
+  Player *p = new Player("testUser", 100);
+  Weapon *w = new Weapon("testWeapon", "testDisc");
+
+  p->addItem(w);
+  EXPECT_EQ(p->listInventory(), p->getName() +
+                                    " has the following items\n"
+                                    "- " +
+                                    w->getName() + " Type: " + w->getType() +
+                                    "\n" + "\t" + w->getDescription() + "\n");
 
   delete p;
 }

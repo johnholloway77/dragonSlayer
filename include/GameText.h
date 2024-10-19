@@ -121,6 +121,8 @@ const char helpText[] =
     "\n"
     "pickup - pickup item\n"
     "\t eg: \"pickup speer\" to pickup speer from current location\n"
+    "eat - consume edible items\n"
+    "\t eg: \"eat magicpotion\" to eat the magicpotion in inventory\n"
     "Attack - attack an enemy in the current location\n"
     "\t\"Attack DarkKnight\" - attack the local enemy\n"
     "\t\"Attack DarkKnight with muffin\" - attack enemy with inventory item\n";

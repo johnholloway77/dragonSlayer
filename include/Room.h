@@ -35,7 +35,7 @@ class Room {
 
   void setWest(Room *west);
 
-  explicit Room(std::string &name) : _name(name) {}
+  explicit Room(const std::string &name) : _name(name) {}
   Room(const std::string &name, bool accessable, const std::string &desc)
       : _name(name), _accessable(accessable), _description(desc) {}
   Room(const std::string &name, const std::string &desc)

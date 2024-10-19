@@ -14,7 +14,7 @@ class RestrictedRoom : public Room {
   Enemy *_boss = nullptr;
 
  public:
-  explicit RestrictedRoom(std::string &name) : Room(name) {
+  explicit RestrictedRoom(const std::string &name) : Room(name) {
     _accessable = false;
   }
   RestrictedRoom(const std::string &name, bool accessable,

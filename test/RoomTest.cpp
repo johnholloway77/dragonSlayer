@@ -16,6 +16,7 @@ TEST(RoomTest, ConstructorTest) {
   EXPECT_EQ(r->getInventory().size(), 0);
   EXPECT_EQ(r->getName(), "testRoom");
   EXPECT_EQ(r->getDescription(), "A room for testing");
+  EXPECT_TRUE(r->isAccessable());
 
   delete r;
 }
@@ -90,4 +91,38 @@ TEST(RoomTest, JoinRoomsTest) {
   delete NW;
   delete SW;
   delete SE;
+}
+
+TEST(RoomTest, HasCreatureTest) {
+  Room *r = new Room("testRoom", "A room for testing");
+  Enemy *e = new Enemy("testEnemy", 1, "testDesc");
+
+  EXPECT_EQ(r->listCreatures(), "Nothing stands here");
+
+  r->addCreature(e);
+  EXPECT_EQ(r->getCreatures().size(), 1);
+  EXPECT_EQ(r->listCreatures(), "- " + e->getName() + "\n");
+
+  r->removeCreature(e);
+  EXPECT_EQ(r->getCreatures().size(), 0);
+
+  delete e;
+  delete r;
+}
+
+TEST(RoomTest, HasItemTest) {
+  Room *r = new Room("testRoom", "A room for testing");
+  Weapon *w = new Weapon("testWeapon", "testWeapon");
+
+  EXPECT_EQ(r->listItems(), "");
+
+  r->addItem(w);
+  EXPECT_EQ(r->getInventory().size(), 1);
+  EXPECT_EQ(r->listItems(), "- " + w->getName() + "\n");
+
+  r->removeItem(w);
+  EXPECT_EQ(r->getInventory().size(), 0);
+
+  delete w;
+  delete r;
 }

@@ -8,6 +8,14 @@
 #include "../include/Food.h"
 #include "../include/RestrictedRoom.h"
 
+TEST(RestrictedRoomTest, DefaultConstrcutorTest) {
+  RestrictedRoom *rr = new RestrictedRoom("testRestrictedRoom");
+
+  EXPECT_FALSE(rr->isAccessable());
+
+  delete rr;
+}
+
 TEST(RestrictedRoomTest, RestrictedRoomTest) {
   Enemy *e = new Enemy("testEnemy", 1, "testDesc");
   Food *poison = new Food("testFood", -100);

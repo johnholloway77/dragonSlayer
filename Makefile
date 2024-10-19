@@ -60,7 +60,7 @@ clean:
 # Clean only the object files
 .PHONY: clean-obj
 clean-obj:
-	rm -rf $(OBJECTS)
+	rm -rf $(OBJECTS) $(GTEST_OBJECTS)
 
 # Clean only the executable files
 .PHONY: clean-exec
@@ -115,7 +115,7 @@ $(BINARY): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJECTS) ${LIBS}
 
 ${GTEST_BINARY}: $(GTEST_OBJECTS)
-	${CXX} $(CXXFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib ${GTEST_LIB} ${LIBS}
+	${CXX} $(CXXFLAGS) $(DEBUGFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib ${GTEST_LIB} ${LIBS}
 
 # Rule to compile .cpp files into object files
 %.o: %.cpp
@@ -176,7 +176,7 @@ coverage: clean-exec clean-cov
 	llvm-profdata merge -sparse coverage.profraw -o coverage.profdata
 	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_RESULTS} -ignore-filename-regex="/usr/local/include/gtest/.*"
 
-
+	gmake clean-obj
 	gmake clean-temp
 else
 .PHONY: coverage

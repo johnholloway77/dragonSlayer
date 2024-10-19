@@ -4,4 +4,10 @@
 
 #include "../include/RestrictedRoom.h"
 
-bool RestrictedRoom::isAccessable() { return !_boss->isAlive(); }
+bool RestrictedRoom::isAccessable() {
+  if (_boss) {
+    return !_boss->isAlive();
+  } else {
+    return false;
+  }
+}
