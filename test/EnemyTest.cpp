@@ -155,12 +155,11 @@ TEST(EnemyTest, DropInventory) {
 TEST(EnemyTest, AttackFoodResponseTest) {
   Enemy *e = new Enemy("testEnemy", 100, "testDesc");
   Player *p = new Player("testUser", 100);
-  Weapon *w = new Weapon("testWeapon");
   Food *f = new Food("testFood");
 
   EXPECT_EQ(e->getHealth(), 100);
-  e->addItem(w);
-  e->attack(p, w);
+  e->addItem(f);
+  e->attack(p, f);
   EXPECT_LT(p->getHealth(), 100);
 
   delete e;
