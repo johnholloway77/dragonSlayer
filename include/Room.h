@@ -27,14 +27,6 @@ class Room {
   std::vector<Creature *> _creatures;
 
  public:
-  void setNorth(Room *north);
-
-  void setEast(Room *east);
-
-  void setSouth(Room *south);
-
-  void setWest(Room *west);
-
   explicit Room(const std::string &name) : _name(name) {}
   Room(const std::string &name, bool accessable, const std::string &desc)
       : _name(name), _accessable(accessable), _description(desc) {}
@@ -45,6 +37,14 @@ class Room {
   const std::string &getDescription();
   std::string listItems();
   std::string listCreatures();
+
+  void setNorth(Room *north);
+
+  void setEast(Room *east);
+
+  void setSouth(Room *south);
+
+  void setWest(Room *west);
 
   Room *getNorth();
   Room *getEast();
