@@ -55,7 +55,7 @@ endif
 # Clean up the binary and object files
 .PHONY: clean
 clean:
-	rm -rf $(BINARY) $(OBJECTS) $(GTEST_BINARY)
+	rm -rf $(BINARY) $(OBJECTS) $(GTEST_BINARY)  $(GTEST_OBJECTS)
 
 # Clean only the object files
 .PHONY: clean-obj
@@ -149,23 +149,6 @@ debug: CXXFLAGS += $(DEBUGFLAGS)
 debug: $(BINARY)
 
 # To perform the code coverage checks
-#.PHONY: coverage
-#coverage: clean-exec clean-cov
-##	${CXX} $(CXXWITHCOVERAGEFLAGS)  $(INCLUDE) -o ./${GTEST} ${SRC_DIR} \
-##	${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${GTEST_LIB}
-#	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -o $@ $^ -L/usr/local/lib ${GTEST_LIB} ${LIBS}
-#	./${GTEST}
-#	# Determine code coverage
-#	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
-#	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
-#	# Only show code coverage for the source code files (not library files)
-#	${LCOV} --extract ${COVERAGE_RESULTS} */*/*/${SRC_DIR}/* -o \
-#	${COVERAGE_RESULTS}
-#	#Generate the HTML reports
-#	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
-#	#Remove all of the generated files from gcov
-#	make clean-temp
-#
 ifeq ($(UNAME_S), FreeBSD)
 
 .PHONY: coverage
@@ -183,6 +166,7 @@ else
 coverage: clean-exec clean-cov
 	${CXX} $(CXXWITHCOVERAGEFLAGS) $(INCLUDE) -L/usr/local/lib -o ${GTEST_BINARY} ${GTEST_DIR}/*.cpp ${SRC_DIR}/*.cpp ${GTEST_LIB} ${LIBS}
 	./${GTEST_BINARY}
+
     # Determine code coverage
 	${LCOV} --capture --gcov-tool ${GCOV} --directory . --output-file \
 	${COVERAGE_RESULTS} --rc lcov_branch_coverage=1
