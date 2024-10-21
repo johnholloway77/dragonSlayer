@@ -157,9 +157,9 @@ TEST(EnemyTest, AttackFoodResponseTest) {
   Player *p = new Player("testUser", 100);
   Food *f = new Food("testFood");
 
-  EXPECT_EQ(e->getHealth(), 100);
-  e->addItem(f);
-  e->attack(p, f);
+  EXPECT_EQ(p->getHealth(), 100);
+  p->addItem(f);
+  p->attack(e, f);
   EXPECT_LT(p->getHealth(), 100);
 
   delete e;
