@@ -8,6 +8,11 @@
 #include <string>
 
 namespace GameText {
+
+/**
+ * @brief the title to be used on John's FreeBSD laptop that has more than the
+ * default terminal fonts installed. Looks sexy!
+ */
 const char title[] =
     "\n"
     "████████▄     ▄████████    ▄████████    ▄██████▄   ▄██████▄  ███▄▄▄▄      "
@@ -49,6 +54,10 @@ const char title[] =
     "               2024 J. Holloway, Dorgee Lama, and John Nisperos           "
     "        \n";
 
+/**
+ * @brief A title screen to be used on the linux builds which don't have the
+ * same sexy fonts installed by default
+ */
 const char title2[] =
     "      d8b                                                \n"
     "      88P                                                \n"
@@ -73,6 +82,9 @@ const char title2[] =
 
     "  2024 J. Holloway, Dorgee Lama, and John Nisperos       \n";
 
+/**
+ * @brief The welcome text setting the stage for the game
+ */
 const char welcomeText[] =
     "You are but a humble peasant, hoping for a life of adventure and riches!\n"
     "You hear rumors of wild beasts roaming the land and great monsters "
@@ -82,6 +94,9 @@ const char welcomeText[] =
     "\n"
     "Will you heed the call of adventure?";
 
+/**
+ * @brief The screen for winning the game.
+ */
 const char winnerText[] =
     "               Congratulations %s you've won the game!\n"
     "For slaying the dragon King Erebus grants you knighthood and a new "
@@ -108,6 +123,10 @@ const char winnerText[] =
     "  |__________|-------|________\\_____/________|-------|__________|\n"
     "\n                  Enter \"exit\" to leave game";
 
+/*
+ * @brief The text that will appear when the player enters "help" into the text
+ * input
+ */
 const char helpText[] =
     "Commands - Enter the following\n"
     "\n"
@@ -122,7 +141,7 @@ const char helpText[] =
     "pickup - pickup item\n"
     "\t eg: \"pickup speer\" to pickup speer from current location\n"
     "eat - consume edible items\n"
-    "\t eg: \"eat magicpotion\" to eat the magicpotion in inventory\n"
+    "\t eg: \"eat magicpotion\" to eat the magic potion in inventory\n"
     "Attack - attack an enemy in the current location\n"
     "\t\"Attack DarkKnight\" - attack the local enemy\n"
     "\t\"Attack DarkKnight with muffin\" - attack enemy with inventory item\n";
