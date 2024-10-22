@@ -4,6 +4,7 @@ stages:
   - build
   - unit_test
   - active_tests
+  - coverage
 
 variables:
   GIT_STRATEGY: clone
@@ -44,3 +45,11 @@ memoryLeaks:
   stage: active_tests
   script:
     - make memcheck
+
+coverage:
+  stage: active_tests
+  script:
+    - make coverage
+  artifacts:
+    paths:
+      - coverage
