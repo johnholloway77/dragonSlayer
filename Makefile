@@ -100,7 +100,7 @@ coverage: clean-exec clean-cov
 	LLVM_PROFILE_FILE="coverage.profraw" ./${GTEST_BINARY}
 	# Determine code coverage
 	llvm-profdata merge -sparse coverage.profraw -o coverage.profdata
-	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_RESULTS} -ignore-filename-regex="/usr/local/include/gtest/.*"
+	llvm-cov show ./${GTEST_BINARY} -instr-profile=coverage.profdata -format=html -output-dir=${COVERAGE_DIR} -ignore-filename-regex="/usr/local/include/gtest/.*"
 
 	gmake clean-obj
 	gmake clean-temp
