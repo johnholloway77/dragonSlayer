@@ -30,6 +30,14 @@ The development team consists of:
 * Developer: `Dorgee Lama (lamd2721)`
 * Developer: `John Nisperos (nisj2721)`
 
+DragonSlayer is a simple text adventure game in the style of such late 70s/early 80s classics as Colossal Cave
+Adventure, but far simpler.
+
+Use prompts like `look at [noun]`, `pickup [noun]`, `go [direction]`, `attack [noun] with [noun]`, `eat [noun]` to make
+your way through the Kingdom of King Erebus and kill the dragon that burned down your cottage and barbequed your
+roommate (although we know you're not upset to now have a place to yourself). If you need a refresher on the commands
+simply type `help`. To give up your quest type `exit`.
+
 ## Important Notice Regarding Gitlab Pipeline
 
 Due to the dependency on the ncurses library (see below), the application will not build on the cs.uleth.ca
