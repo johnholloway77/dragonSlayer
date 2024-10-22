@@ -75,7 +75,7 @@ style:
 	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE_DIR}/*
 
 #Check for memory leaks with Valgrind. Off to Valhalla we go!!
-memcheck: ${GTEST}
+memcheck: ${GTEST_BINARY}
 	valgrind --tool=memcheck --leak-check=yes --error-exitcode=1 ./${GTEST_BINARY}
 
 test: ${GTEST_BINARY}
