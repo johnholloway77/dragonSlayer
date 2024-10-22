@@ -854,7 +854,7 @@ int Game::loadRoom(Room *room, char c, const Item *item) {
 
   if (c == 'p') {
     actionString = "picks up";
-  } else if (c == 'c') {
+  } else if (c == 'd') {
     actionString = "drops";
   } else {
     actionString = "does something with";
