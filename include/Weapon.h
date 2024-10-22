@@ -17,6 +17,7 @@
 class Weapon : public Item {
  private:
   int _damage = 5;  // default damage
+
  public:
   /**
    * @brief A function that specifies the type of Item object
