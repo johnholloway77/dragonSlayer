@@ -48,64 +48,7 @@ else
 GCOV = gcov
 LCOV = lcov
 endif
-################################################################################
-# Clean-up targets
-################################################################################
 
-# Clean up the binary and object files
-.PHONY: clean
-clean:
-	rm -rf $(BINARY) $(OBJECTS) $(GTEST_BINARY)  $(GTEST_OBJECTS)
-
-# Clean only the object files
-.PHONY: clean-obj
-clean-obj:
-	rm -rf $(OBJECTS) $(GTEST_OBJECTS)
-
-# Clean only the executable files
-.PHONY: clean-exec
-clean-exec:
-	rm -f $(GTEST_BINARY) $(BINARY)
-
-.PHONY: clean-docs
-clean-docs:
-	rm -rf docs/code/html
-
-
-ifeq ($(UNAME_S), FreeBSD)
-
-.PHONY: clean-cov
-clean-cov:
-	rm -rf *.profdata *profraw ${COVERAGE_RESULTS} ${COVERAGE_DIR}
-
-else
-.PHONY: clean-cov
-clean-cov:
-	rm -rf *.gcov *.gcda *.gcno ${COVERAGE_RESULTS} ${COVERAGE_DIR}
-
-endif
-
-
-
-ifeq ($(UNAME_S), FreeBSD)
-
-.PHONY: clean-temp
-clean-temp:
-	rm -rf *.profdata *profraw
-
-else
-
-.PHONY: clean-temp
-clean-temp:
-	rm -rf *~ \#* .\#* \
-	${SRC_DIR}/*~ ${SRC_DIR}/\#* ${SRC_DIR}/.\#* \
-	${GTEST_INCLUDE_DIR}/*~ ${GTEST_INCLUDE_DIR}/\#* ${GTEST_INCLUDE_DIR}/.\#* \
-	${SRC_INCLUDE_DIR}/*~ ${SRC_INCLUDE_DIR}/\#* ${SRC_INCLUDE_DIR}/.\#* \
-	${PROJECT_SRC_DIR}/*~ ${PROJECT_SRC_DIR}/\#* ${PROJECT_SRC_DIR}/.\#* \
-	${DESIGN_DIR}/*~ ${DESIGN_DIR}/\#* ${DESIGN_DIR}/.\#* \
-	*.gcov *.gcda *.gcno
-
-endif
 ################################################################################
 # Test targets
 ################################################################################
@@ -177,4 +120,63 @@ coverage: clean-exec clean-cov
 	genhtml ${COVERAGE_RESULTS} --output-directory ${COVERAGE_DIR}
 	#Remove all of the generated files from gcov
 	make clean-temp
+endif
+
+################################################################################
+# Clean-up targets
+################################################################################
+
+# Clean up the binary and object files
+.PHONY: clean
+clean:
+	rm -rf $(BINARY) $(OBJECTS) $(GTEST_BINARY)  $(GTEST_OBJECTS)
+
+# Clean only the object files
+.PHONY: clean-obj
+clean-obj:
+	rm -rf $(OBJECTS) $(GTEST_OBJECTS)
+
+# Clean only the executable files
+.PHONY: clean-exec
+clean-exec:
+	rm -f $(GTEST_BINARY) $(BINARY)
+
+.PHONY: clean-docs
+clean-docs:
+	rm -rf docs/code/html
+
+
+ifeq ($(UNAME_S), FreeBSD)
+
+.PHONY: clean-cov
+clean-cov:
+	rm -rf *.profdata *profraw ${COVERAGE_RESULTS} ${COVERAGE_DIR}
+
+else
+.PHONY: clean-cov
+clean-cov:
+	rm -rf *.gcov *.gcda *.gcno ${COVERAGE_RESULTS} ${COVERAGE_DIR}
+
+endif
+
+
+
+ifeq ($(UNAME_S), FreeBSD)
+
+.PHONY: clean-temp
+clean-temp:
+	rm -rf *.profdata *profraw
+
+else
+
+.PHONY: clean-temp
+clean-temp:
+	rm -rf *~ \#* .\#* \
+	${SRC_DIR}/*~ ${SRC_DIR}/\#* ${SRC_DIR}/.\#* \
+	${GTEST_INCLUDE_DIR}/*~ ${GTEST_INCLUDE_DIR}/\#* ${GTEST_INCLUDE_DIR}/.\#* \
+	${SRC_INCLUDE_DIR}/*~ ${SRC_INCLUDE_DIR}/\#* ${SRC_INCLUDE_DIR}/.\#* \
+	${PROJECT_SRC_DIR}/*~ ${PROJECT_SRC_DIR}/\#* ${PROJECT_SRC_DIR}/.\#* \
+	${DESIGN_DIR}/*~ ${DESIGN_DIR}/\#* ${DESIGN_DIR}/.\#* \
+	*.gcov *.gcda *.gcno
+
 endif
