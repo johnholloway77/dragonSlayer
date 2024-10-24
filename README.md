@@ -59,8 +59,6 @@ machines required by the course.
 - `gmake` if on FreeBSD. Needed because Makefile contains `ifeq` statements, which are not supported by base
   system's `make` utility.
 
-run make on Linux, gmake on FreeBSD
-
 ## Build
 
 To build the game, run the following command:
