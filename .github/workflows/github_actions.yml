@@ -1,5 +1,5 @@
 name: DragonSlayer Test Pipeline
-run-name: ${{ github.actor } is running a test on DragonSlayer game
+run-name: ${{ .github.actor } is running a test on DragonSlayer game
 on:
   push:
     branches:
