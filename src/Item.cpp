@@ -4,7 +4,7 @@
 
 #include "../include/Item.h"
 
-#include <iostream>
+#include <string>
 
 #include "../include/Room.h"
 

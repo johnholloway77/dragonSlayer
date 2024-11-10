@@ -6,8 +6,11 @@
 
 #include <ncurses.h>
 
+#include <cstdio>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "../include/Enemy.h"
 #include "../include/ExitRoom.h"
