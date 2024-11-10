@@ -1,0 +1,45 @@
+name: DragonSlayer Test Pipeline
+run-name: ${{ github.actor } is running a test on DragonSlayer game
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  combined:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Make Documentation
+        run: make docs
+
+      - name: Upload Documentation
+        uses: actions/upload-artifict@v3
+        with:
+          name: docs
+          path: docs/code/src
+
+      - name: Style Check
+        run: make style
+
+      - name: Static Analysis
+        run: make static
+
+      - name: Build Tests
+        run: make test_dragonSlayer
+
+      - name: Run Unit Tests
+        run: ./test_dragonSlayer
+
+      - name: Run Coverage
+        run: make coverage
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+
