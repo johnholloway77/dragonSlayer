@@ -72,7 +72,7 @@ static:
 # To perform the style check
 # excluding SRC_NCURSES_DIR as it was not made by project authors, but needed to be included directly to run on gitlab
 style:
-	${STYLE_CHECK} --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE_DIR}/* --exclude=include/GameText.h
+	${STYLE_CHECK} --exclude=include/GameText.h --recursive ${SRC_DIR}/* ${GTEST_DIR}/* ${SRC_INCLUDE_DIR}/*
 
 #Check for memory leaks with Valgrind. Off to Valhalla we go!!
 memcheck: ${GTEST_BINARY}
