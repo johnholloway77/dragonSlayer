@@ -13,17 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install cppcheck
-        run: sudo apt-get update && sudo apt-get install -y cppcheck
-
-      - name: Install googleTest
-        run: sudo apt-get install -y libgtest-dev
-
-      - name: Install cpplint
-        run: sudo apt-get install -y python3-pip && pip3 install cpplint
-
-      - name: Install doxygen
-        run: sudo apt-get install -y doxygen
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y cppcheck && sudo apt-get install -y libgtest-dev && sudo apt-get install -y doxygen && sudo apt-get install -y python3-pip && pip3 install cpplint
 
       - name: Make Documentation
         run: make docs
@@ -40,7 +31,5 @@ jobs:
       - name: Run Unit Tests
         run: ./test_dragonSlayer
 
-      - name: Run Coverage
-        run: make coverage
 
 
